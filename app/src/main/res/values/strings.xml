@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">বাংলাদেশ ক্রিকেট</string>
+    <string name="action_settings">Settings</string>
+    <string name="news">Top News</string>
+    <string name="national_team">National Team</string>
+    <string name="national_women_team">জাতীয় মহিলা দল</string>
+    <string name="u_19_team">অনূর্ধ্ব-১৯ দল</string>
+    <string name="upcoming_tournament">Upcoming Tournament</string>
+    <string name="loading">Loading...</string>
+    <string name="popup_message">Please connect to internet of updated news and scores</string>
+    <string name="popup_message_live">For live streaming please connect to internet</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="popup_title">Connection Alert</string>
+    <string name="go_back_title">Alert</string>
+    <string name="go_back_message">Want to close the app?</string>
+    <string name="age">Age</string>
+    <string name="role">Role</string>
+    <string name="style">Style</string>
+    <string name="matchnumber">Match no</string>
+    <string name="squad">Squad</string>
+    <string name="fixture">Fixture</string>
+    <string name="result">Result</string>
+    <string name="detail">Details</string>
+    <string name="notification_title">News Update</string>
+    <string name="notification_message">Many exciting news are waiting for you</string>
+    <string name="banner_ad_unit_id">ca-app-pub-6308034132891583/8026837955</string>
+    <string name="rate_it">Rate it </string>
+    <string name="live_score">Live Score</string>
+    <string name="live_streaming">Live Streaming</string>
+    <string name="invite">Invite Friends</string>
+    <string name="invite_message">Hey! I am using "বাংলাদেশ ক্রিকেট" app for live score and live streaming of T20 world cup 2016 from the below link. You can also enjoy it and keep roaring for Bangladeshi Tigers. Link: https://play.google.com/store/apps/details?id=com.codeartist.bdcricketteam</string>
+    <string name="smsinvite">sms invitation</string>
+    <string name="whatsappinvite">whats app invitation</string>
+    <string name="otherinvite">Invite with other ways</string>
+    <string name="live_score_connect_to_internet">For live score please connect to internet</string>
+    <string name="no_match">No match is going  on today</string>
+    <string name="youtube_api_key">AIzaSyBGEocS3tNHyI_fag19EvD8AI7AmgMNwHw</string>
+</resources>

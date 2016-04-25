@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/grp1"  android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/news"
+            android:checked="true"
+            android:icon="@drawable/newsicon"
+            android:title="@string/news" />
+
+        <item
+            android:id="@+id/bdTeam"
+            android:checked="false"
+            android:icon="@drawable/menu2"
+            android:title="@string/national_team" />
+
+        <item
+            android:id="@+id/upcomingTournament"
+            android:checked="false"
+            android:icon="@drawable/menu3"
+            android:title="@string/upcoming_tournament" />
+
+        <item
+            android:id="@+id/liveScore"
+            android:checked="false"
+            android:icon="@drawable/livescore"
+            android:title="@string/live_score" />
+    </group>
+
+
+    <group android:id="@+id/grp2"  android:checkableBehavior="none">
+        <item
+            android:id="@+id/liveStreaming"
+            android:checked="false"
+            android:icon="@drawable/livestreaming"
+            android:title="@string/live_streaming" />
+        <item
+            android:id="@+id/invite"
+            android:checked="false"
+            android:icon="@drawable/invitefriends"
+            android:title="@string/invite" />
+    </group>
+</menu>

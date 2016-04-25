@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <Button
+        android:id="@+id/sms_invite"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:drawableLeft="@drawable/smsinvitenew"
+        android:text="@string/smsinvite"
+        android:textSize="18sp"/>
+    <Button
+        android:id="@+id/whats_app_invite"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textAllCaps="false"
+        android:drawableLeft="@drawable/whatsappinvite"
+        android:text="@string/whatsappinvite"
+        android:textSize="18sp"/>
+    <Button
+        android:id="@+id/other_invite"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:drawableLeft="@drawable/smallother"
+        android:text="@string/otherinvite"
+        android:textSize="18sp"/>
+
+</LinearLayout>

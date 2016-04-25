@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">বাংলাদেশ ক্রিকেট</string>
+    <string name="action_settings">সেটিংস</string>
+    <string name="news">টপ নিউজ</string>
+    <string name="national_team">জাতীয় দল</string>
+    <string name="national_women_team">জাতীয় মহিলা দল</string>
+    <string name="u_19_team">অনূর্ধ্ব-১৯ দল</string>
+    <string name="upcoming_tournament">আসন্ন টুর্নামেন্ট</string>
+    <string name="loading">লোড হচ্ছে...</string>
+    <string name="popup_message">আপনার ইন্টারনেট সংযোগ বিচ্ছিন্ন  রয়েছে তথ্য নবায়ানের জন্য সংযোগ চালু করুন।</string>
+    <string name="popup_message_live">আপনার ইন্টারনেট সংযোগ বিচ্ছিন্ন  রয়েছে লাইভ স্ট্রিমিং এর জন্য সংযোগ চালু করুন।</string>
+    <string name="yes">হ্যাঁ</string>
+    <string name="no">না</string>
+    <string name="cancel">বাতিল করুন</string>
+    <string name="popup_title">সংযোগ সতর্কীকরণ</string>
+    <string name="go_back_title">সতর্কীকরণ</string>
+    <string name="go_back_message">আপনি কি অ্যাপ থেকে বের হয়ে যেতে চান?</string>
+    <string name="age">বয়স</string>
+    <string name="role">ভূমিকা</string>
+    <string name="style">স্টাইল</string>
+    <string name="matchnumber">ম্যাচ নাম্বার</string>
+    <string name="squad">সদস্য</string>
+    <string name="fixture">সময় সূচি</string>
+    <string name="result">ফলাফল</string>
+    <string name="detail">বিস্তারিত</string>
+    <string name="notification_title">নিউজ আপডেট</string>
+    <string name="notification_message">দারুন  সব নতুন সংবাদ আপনার অপেক্ষায়</string>
+    <string name="banner_ad_unit_id">ca-app-pub-6308034132891583/8026837955</string>
+    <string name="rate_it">রেটিং করুন </string>
+    <string name="live_score">লাইভ স্কোর</string>
+    <string name="live_streaming">লাইভ স্ট্রিমিং</string>
+    <string name="invite">বন্ধুদের আমন্ত্রন</string>
+    <string name="invite_message">Hey! I am using "বাংলাদেশ ক্রিকেট" app for live score and live streaming of T20 world cup 2016 from the below link. You can also enjoy it and keep roaring for Bangladeshi Tigers. Link: https://play.google.com/store/apps/details?id=com.codeartist.bdcricketteam</string>
+    <string name="smsinvite">sms এ আমন্ত্রন</string>
+    <string name="whatsappinvite">whats app এ আমন্ত্রন</string>
+    <string name="otherinvite">অন্যান্য উপায়ে আমন্ত্রন</string>
+    <string name="live_score_connect_to_internet">লাইভ স্কোর পেতে ইন্টারনেট সংযোগ চালু করুন</string>
+    <string name="no_match">আজ বাংলাদেশের কোন খেলা নাই</string>
+    <string name="youtube_api_key">AIzaSyBGEocS3tNHyI_fag19EvD8AI7AmgMNwHw</string>
+</resources>
