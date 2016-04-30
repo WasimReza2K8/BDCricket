@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:id="@+id/grp1"  android:checkableBehavior="single">
+    <group
+        android:id="@+id/grp1"
+        android:checkableBehavior="single">
 
         <item
             android:id="@+id/news"
@@ -26,10 +28,17 @@
             android:checked="false"
             android:icon="@drawable/livescore"
             android:title="@string/live_score" />
+        <item
+            android:id="@+id/highlights"
+            android:checked="false"
+            android:icon="@drawable/highlights"
+            android:title="@string/highlights" />
     </group>
 
 
-    <group android:id="@+id/grp2"  android:checkableBehavior="none">
+    <group
+        android:id="@+id/grp2"
+        android:checkableBehavior="none">
         <item
             android:id="@+id/liveStreaming"
             android:checked="false"
@@ -40,5 +49,10 @@
             android:checked="false"
             android:icon="@drawable/invitefriends"
             android:title="@string/invite" />
+        <item
+            android:id="@+id/like"
+            android:checked="false"
+            android:icon="@drawable/like"
+            android:title="@string/like_us" />
     </group>
 </menu>

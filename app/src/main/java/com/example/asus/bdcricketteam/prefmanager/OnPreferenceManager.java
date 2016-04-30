@@ -15,6 +15,7 @@ public class OnPreferenceManager {
     private SharedPreferences.Editor editor;
     private SharedPreferences prefs;
     private String newsUpdate = "newsUpdate";
+    private String highlightsUpdate = "highlightsUpdate";
     private String tournamentUpdate = "tournamentUpdate";
     private String tournamentName = "tournamentName";
     private String date = "date";
@@ -45,6 +46,21 @@ public class OnPreferenceManager {
         editor.apply();
     }
 
+    public synchronized int getNewsUpdate() {
+        int selectionStart = prefs.getInt(newsUpdate, 1);
+        return selectionStart;
+    }
+
+    public synchronized void setHighlightsUpdate(int news) {
+        editor.putInt(highlightsUpdate, news);
+        editor.apply();
+    }
+
+    public synchronized int getHighlightsUpdate() {
+        int selectionStart = prefs.getInt(highlightsUpdate, 1);
+        return selectionStart;
+    }
+
 
     public synchronized void setDate(Long hour) {
         editor.putLong(date, hour);
@@ -66,10 +82,7 @@ public class OnPreferenceManager {
         return selectionStart;
     }
 
-    public synchronized int getNewsUpdate() {
-        int selectionStart = prefs.getInt(newsUpdate, 1);
-        return selectionStart;
-    }
+
 
     public synchronized int getTournamentUpdate() {
         int selectionStart = prefs.getInt(tournamentUpdate, 1);

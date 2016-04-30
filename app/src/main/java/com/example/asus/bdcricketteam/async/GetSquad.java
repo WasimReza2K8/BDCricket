@@ -2,7 +2,6 @@ package com.example.asus.bdcricketteam.async;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.CareerDataModel;
@@ -50,7 +49,7 @@ public class GetSquad extends AsyncTask<Void, Void, String> {
             while ((str = in.readLine()) != null) {
                 //stringDivideDataEntry(str.trim());
                 total.append(str);
-                Log.e("string server", str);
+               // Log.e("string server", str);
             }
             parseJSONGetData(total.toString());
             in.close();
@@ -178,6 +177,6 @@ public class GetSquad extends AsyncTask<Void, Void, String> {
         if (mUiRefreshCallBack != null) {
             mUiRefreshCallBack.onProgress(70);
         }
-        Log.e("final ", result);
+     //  Log.e("final ", result);
     }
 }

@@ -49,7 +49,7 @@ public class GetSchedule extends AsyncTask<Void, Void, String> {
             while ((str = in.readLine()) != null) {
                 //stringDivideDataEntry(str.trim());
                 total.append(str);
-                Log.e("string server", str);
+              //  Log.e("string server", str);
             }
             parseJSONGetData(total.toString());
             in.close();

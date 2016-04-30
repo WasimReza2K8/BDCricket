@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.asus.bdcricketteam.datamodel.CareerDataModel;
 import com.example.asus.bdcricketteam.datamodel.FixtureDataModel;
+import com.example.asus.bdcricketteam.datamodel.HighlightsDataModel;
 import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.datamodel.SquadModel;
 
@@ -33,6 +34,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String NEWS_TITLE = "news_title";
     public static final String NEWS_DETAIL = "news_detail";
     public static final String NEWS_IMAGE_LINK = "news_image_link";
+    public static final String DURATION = "duration";
+    public static final String HIGHLIGHTS_TABLE = "highlights_table";
     public static final String COLUMN_MATCH_ID = "_id";
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_TIME = "time";
@@ -185,17 +188,16 @@ public class Database extends SQLiteOpenHelper {
                 + COLUMN_MATCH_NUMBER + " TEXT, "
                 + COLUMN_TOURNAMENT + " TEXT, "
                 + COLUMN_MATCH_RESULT + " TEXT);");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + HIGHLIGHTS_TABLE + " ("
+                + COLUMN_MATCH_ID + " INTEGER primary key autoincrement, "
+                + NEWS_TITLE + " TEXT NOT NULL, "
+                + DURATION + " TEXT NOT NULL, "
+                + NEWS_IMAGE_LINK + " TEXT);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + NATIONAL_TEAM_FIXTURE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + UPCOMING_TOURNAMENT_FIXTURE);
-        db.execSQL("DROP TABLE IF EXISTS " + NEWS_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + SQUAD_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEST);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODI);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_T20);
         onCreate(db);
     }
 
@@ -257,6 +259,15 @@ public class Database extends SQLiteOpenHelper {
         cv.put(NEWS_IMAGE_LINK, model.getImageLink());
 
         return getDatabase().insert(NEWS_TABLE, null, cv);
+    }
+
+    public static synchronized long insertHighlightsValues(HighlightsDataModel model) {
+        ContentValues cv = new ContentValues();
+        cv.put(NEWS_TITLE, model.getTitle());
+        cv.put(DURATION, model.getDuration());
+        cv.put(NEWS_IMAGE_LINK, model.getImageLink());
+
+        return getDatabase().insert(HIGHLIGHTS_TABLE, null, cv);
     }
 
 
@@ -492,6 +503,38 @@ public class Database extends SQLiteOpenHelper {
                 model.setId(c.getInt(0));
                 model.setTitle(c.getString(1));
                 model.setFullNews(c.getString(2));
+                model.setImageLink(c.getString(3));
+
+                list.add(model);
+
+
+            } while (c.moveToNext());
+        }
+        c.close();
+        return list;
+    }
+
+    public static synchronized Cursor getHighLightsCursor() {
+        // TODO Auto-generated method stub
+        String[] columns = new String[]{
+                COLUMN_MATCH_ID,
+                NEWS_TITLE,
+                DURATION,
+                NEWS_IMAGE_LINK
+        };
+        return getDatabase().query(HIGHLIGHTS_TABLE, columns, null, null, null, null, null);
+    }
+
+    public static List<HighlightsDataModel> getAllHighlights() {
+        List<HighlightsDataModel> list = new ArrayList<>();
+        Cursor c = Database.getHighLightsCursor();
+        if (c.moveToFirst()) {
+
+            do {
+                HighlightsDataModel model = new HighlightsDataModel();
+                model.setId(c.getInt(0));
+                model.setTitle(c.getString(1));
+                model.setDuration(c.getString(2));
                 model.setImageLink(c.getString(3));
 
                 list.add(model);

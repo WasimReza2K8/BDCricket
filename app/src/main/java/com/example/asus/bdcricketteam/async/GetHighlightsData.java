@@ -4,8 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.asus.bdcricketteam.database.Database;
-import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
-import com.example.asus.bdcricketteam.interfaceui.UIRefreshCallBack;
+import com.example.asus.bdcricketteam.datamodel.HighlightsDataModel;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
 
@@ -19,17 +18,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by ASUS on 3/5/2016.
- */
-public class GetNews extends AsyncTask<Void, Void, String> {
-    private Context mContext;
-    private UIRefreshCallBack mUiRefreshCallBack;
-    public String newsFileURL2 = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwTS1ZNGVENzdzTDA";
+//import android.util.Log;
 
-    public GetNews(Context context, UIRefreshCallBack uiRefreshCallBack) {
+/**
+ * Created by ASUS on 4/30/2016.
+ */
+public class GetHighlightsData extends AsyncTask<Void, Void, String> {
+
+    private Context mContext;
+   // private UIRefreshCallBack mUiRefreshCallBack;
+    public String newsFileURL2 = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwdmhxa0F2YWFUYWM";
+    //https://drive.google.com/file/d/0B85b1FRNOEQwdmhxa0F2YWFUYWM/view?usp=sharing
+    public GetHighlightsData(Context context) {
         mContext = context;
-        mUiRefreshCallBack = uiRefreshCallBack;
     }
 
 
@@ -51,7 +52,7 @@ public class GetNews extends AsyncTask<Void, Void, String> {
             while ((str = in.readLine()) != null) {
                 total.append(str);
             }
-         //   Log.e("string total", total.toString());
+           // Log.e("string total", total.toString());
             parseJSONGetData(total.toString());
             in.close();
             return total.toString().trim();
@@ -67,12 +68,12 @@ public class GetNews extends AsyncTask<Void, Void, String> {
         try {
             JSONObject reader = new JSONObject(total);
             JSONObject info = reader.getJSONObject("info");
-            int numberOfNews = info.getInt("numberofnews");
+            int numberOfNews = info.getInt("numberofitems");
             int updateNews = info.getInt("update");
-            if (OnPreferenceManager.getInstance(mContext).getNewsUpdate() == updateNews) {
+            if (OnPreferenceManager.getInstance(mContext).getHighlightsUpdate() == updateNews) {
                 return;
             }
-            OnPreferenceManager.getInstance(mContext).setNewsUpdate(updateNews);
+            OnPreferenceManager.getInstance(mContext).setHighlightsUpdate(updateNews);
             // Database.init(SplashScreen.this);
 
             if (numberOfNews < 1) {
@@ -80,9 +81,9 @@ public class GetNews extends AsyncTask<Void, Void, String> {
             }
 
             Database.init(mContext);
-            Database.deleteAll(Database.NEWS_TABLE);
+            Database.deleteAll(Database.HIGHLIGHTS_TABLE);
             for (int i = 1; i <= numberOfNews; i++) {
-                JSONObject news1 = reader.getJSONObject("news" + i);
+                JSONObject news1 = reader.getJSONObject("item" + i);
                 parseJSONInsertDatabase(news1);
             }
 
@@ -93,18 +94,18 @@ public class GetNews extends AsyncTask<Void, Void, String> {
 
     public void parseJSONInsertDatabase(JSONObject news) {
         String title, detail, imageLink;
-        NewsDataModel model = new NewsDataModel();
+        HighlightsDataModel model = new HighlightsDataModel();
 
         Database.init(mContext);
         //Database.deleteAll(Database.NEWS_TABLE);
         try {
             title = news.getString("title");
             model.setTitle(SecureProcessor.onEncrypt(title.trim()));
-            detail = news.getString("detail");
-            model.setFullNews(SecureProcessor.onEncrypt(detail.trim()));
-            imageLink = news.getString("imagelink");
+            detail = news.getString("duration");
+            model.setDuration(SecureProcessor.onEncrypt(detail.trim()));
+            imageLink = news.getString("link");
             model.setImageLink(imageLink);
-            Database.insertNewsValues(model);
+            Database.insertHighlightsValues(model);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -118,11 +119,10 @@ public class GetNews extends AsyncTask<Void, Void, String> {
         //finish();
         //startActivity(new Intent(SplashScreen.this, MainActivity.class));
         new GetSchedule().execute();*/
-        if (mUiRefreshCallBack != null) {
+        /*if (mUiRefreshCallBack != null) {
             mUiRefreshCallBack.onProgress(100);
-        }
+        }*/
 
 
     }
-
 }

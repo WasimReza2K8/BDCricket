@@ -22,18 +22,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.asus.bdcricketteam.ads.GoogleAds;
+import com.example.asus.bdcricketteam.async.GetVersionUpdate;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
+import com.example.asus.bdcricketteam.interfaceui.UpdatePopupCallBack;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
 import com.google.android.gms.ads.AdRequest;
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout content;
     FragmentManager fragmentManager = getSupportFragmentManager();
     private NavigationView navigationView;
+    private UpdatePopupCallBack updatePopupCallBack;
     private int timeDelay = 350;
     FragmentTransaction fragTransaction;
     public String fixtureFileURl = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwdHRvSjB2UlVTdTA";
@@ -71,11 +72,23 @@ public class MainActivity extends AppCompatActivity {
         fragTransaction = getSupportFragmentManager().beginTransaction();
         NewsFragment base = new NewsFragment();
         toolbar.setTitle(getResources().getString(R.string.app_name));
+
+        updatePopupCallBack = new UpdatePopupCallBack() {
+            @Override
+            public void onUpdate(boolean update) {
+                if (update) {
+                    updateRequest();
+                }
+            }
+        };
+
+        new GetVersionUpdate(this, updatePopupCallBack).execute();
         //item.setVisible(false);
         //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
         fragTransaction.replace(content.getId(), base).addToBackStack("tag2");
         fragTransaction.commit();
         setSupportActionBar(toolbar);
+
         // new GetFixture().execute();
         GoogleAds.getGoogleAds(this).requestNewInterstitial();
 
@@ -149,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                                 // fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                                 fragTransaction.replace(content.getId(), otherEventFragment).addToBackStack("tag3");
                                 fragTransaction.commit();
-                                Log.e("tournamentname", OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() + "");
+                               // Log.e("tournamentname", OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() + "");
                                 if (OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() != null
                                         && !OnPreferenceManager.getInstance(MainActivity.this).getTournamentName().equalsIgnoreCase("")) {
                                     toolbar.setTitle(SecureProcessor.onDecrypt(OnPreferenceManager.getInstance(MainActivity.this).getTournamentName()));
@@ -177,6 +190,23 @@ public class MainActivity extends AppCompatActivity {
 
                         return true;
 
+                    case R.id.highlights:
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fragTransaction = fragmentManager.beginTransaction();
+                                //Toast.makeText(getApplicationContext(), "Send Selected", Toast.LENGTH_SHORT).show();
+                                HighlightsFragment settings = new HighlightsFragment();
+                                //item.setVisible(false);
+                                //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
+                                fragTransaction.replace(content.getId(), settings).addToBackStack("tag2");
+                                fragTransaction.commit();
+                                toolbar.setTitle(getResources().getString(R.string.highlights));
+                            }
+                        }, timeDelay);
+
+                        return true;
+
                     case R.id.liveStreaming:
                         if (ConnectionDetector.getInstance(MainActivity.this).isConnectingToInternet()) {
                             Intent i = new Intent(MainActivity.this, LiveStreamingActivity.class);
@@ -190,6 +220,10 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.invite:
                         showInvitePopup();
+                        menuItem.setChecked(false);
+                        return true;
+                    case R.id.like:
+                        getOpenFacebookIntent();
                         menuItem.setChecked(false);
                         return true;
                     default:
@@ -222,6 +256,24 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
 
+    }
+
+
+    public void getOpenFacebookIntent() {
+        String facebookUrl = "https://m.facebook.com/Code-Artist-227094210954911";
+        try {
+            int versionCode = getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
+            if (versionCode >= 3002850) {
+                Uri uri = Uri.parse("fb://facewebmodal/f?href=" + facebookUrl);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                // open the Facebook app using the old method (fb://profile/id or fb://page/id)
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/336227679757310")));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // Facebook is not installed. Open the browser
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)));
+        }
     }
 
     public void showInvitePopup() {
@@ -335,15 +387,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void otherAppInvite() {
-        List<Intent> targetShareIntents=new ArrayList<Intent>();
+        List<Intent> targetShareIntents = new ArrayList<Intent>();
         PackageManager packageManager = getPackageManager();
-        Intent shareIntent=new Intent();
+        Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        List<ResolveInfo> resInfos= getPackageManager().queryIntentActivities(shareIntent, 0);
-        if(!resInfos.isEmpty()){
-           // Logger.log_error( TAG + "sharenew Have package");
-            for(ResolveInfo resInfo : resInfos){
+        List<ResolveInfo> resInfos = getPackageManager().queryIntentActivities(shareIntent, 0);
+        if (!resInfos.isEmpty()) {
+            // Logger.log_error( TAG + "sharenew Have package");
+            for (ResolveInfo resInfo : resInfos) {
                 String packageName = resInfo.activityInfo.packageName;
 
                 Intent intent = new Intent();
@@ -354,18 +406,18 @@ public class MainActivity extends AppCompatActivity {
                 intent.setPackage(resInfo.activityInfo.parentActivityName);
 
                 //ignore list
-                if(packageName.contains("wifi") || packageName.contains("bluetooth") || packageName.contains("nfc") || packageName.contains("connect") || packageName.contains("memo") || packageName.contains("translate") || packageName.contains("gps")
+                if (packageName.contains("wifi") || packageName.contains("bluetooth") || packageName.contains("nfc") || packageName.contains("connect") || packageName.contains("memo") || packageName.contains("translate") || packageName.contains("gps")
                         || packageName.contains("file") || packageName.contains("File") || packageName.contains("drive") || packageName.contains("office") || packageName.contains("docs") || packageName.contains("dropbox") || packageName.contains("beam")
                         || packageName.contains("keep")) {
-                  //  Logger.log_error( TAG + "sharenew IGNORE Package packageName = " + packageName);
+                    //  Logger.log_error( TAG + "sharenew IGNORE Package packageName = " + packageName);
                     continue;
                 }
 
-               // Logger.log_error( TAG + "sharenew Package packageName = " + packageName);
+                // Logger.log_error( TAG + "sharenew Package packageName = " + packageName);
                 if (packageName.contains("sms") || packageName.contains("mms") || packageName.contains("talk") || packageName.contains("messaging") || packageName.contains("twitter") || packageName.contains("com.facebook.orca")) {
                     intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_message));
                     intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.invite_message));
-                } else if(packageName.contains("whatsapp")) {
+                } else if (packageName.contains("whatsapp")) {
                     // dont add subject for whatsapp
                     intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_message));
                 } else {
@@ -374,13 +426,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 targetShareIntents.add(new LabeledIntent(intent, packageName, resInfo.loadLabel(packageManager), resInfo.icon));
             }
-            if(!targetShareIntents.isEmpty()){
-               // Logger.log_error( TAG +"sharenew Have Intent");
-                Intent chooserIntent=Intent.createChooser(targetShareIntents.remove(0), "Choose app to share");
+            if (!targetShareIntents.isEmpty()) {
+                // Logger.log_error( TAG +"sharenew Have Intent");
+                Intent chooserIntent = Intent.createChooser(targetShareIntents.remove(0), "Choose app to share");
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetShareIntents.toArray(new Parcelable[]{}));
                 startActivity(chooserIntent);
-            }else{
-               // Logger.log_error( TAG +"sharenew nothing");
+            } else {
+                // Logger.log_error( TAG +"sharenew nothing");
             }
         }
     }
@@ -416,6 +468,42 @@ public class MainActivity extends AppCompatActivity {
                             dialog.cancel();
                             return;
                         }
+
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    public void updateRequest() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle(getResources().getString(R.string.update_title));
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(getResources().getString(R.string.update_message))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.update_now), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+                        }
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.later), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                        return;
 
                     }
                 });

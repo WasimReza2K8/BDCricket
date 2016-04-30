@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
+import com.example.asus.bdcricketteam.async.GetHighlightsData;
 import com.example.asus.bdcricketteam.async.GetLiveStreamingLink;
 import com.example.asus.bdcricketteam.async.GetNews;
 import com.example.asus.bdcricketteam.async.GetSchedule;
@@ -99,7 +100,7 @@ public class SplashScreen extends AppCompatActivity {
                 Long timeDifference = System.currentTimeMillis() - OnPreferenceManager.getInstance(this).getDate();
                 hour = (int) (timeDifference / (60 * 1000));
 
-                if (hour > 5) {
+                if (hour > 10) {
                     // new GetNews().execute();
                     loadData();
                     OnPreferenceManager.getInstance(this).setDate(System.currentTimeMillis());
@@ -177,6 +178,7 @@ public class SplashScreen extends AppCompatActivity {
         new GetSquad(this, uiRefreshCallBack).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         new GetUpcomingTournament(this, uiRefreshCallBack).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         new GetLiveStreamingLink(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new GetHighlightsData(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 

@@ -37,4 +37,10 @@
     <string name="live_score_connect_to_internet">লাইভ স্কোর পেতে ইন্টারনেট সংযোগ চালু করুন</string>
     <string name="no_match">আজ বাংলাদেশের কোন খেলা নাই</string>
     <string name="youtube_api_key">AIzaSyBGEocS3tNHyI_fag19EvD8AI7AmgMNwHw</string>
+    <string name="highlights">হাইলাইটস</string>
+    <string name="like_us">লাইক করুন</string>
+    <string name="update_title">আপডেট ভার্সন</string>
+    <string name="update_message">গুগল প্লে তে  \"বাংলাদেশ ক্রিকেট- BD Cricket \" অ্যাপ এর নতুন ভার্সন চলে এসেছে। আপনি কি আপডেট করতে চান?</string>
+    <string name="update_now">এখনই আপডেট চাই</string>
+    <string name="later">পরে</string>
 </resources>

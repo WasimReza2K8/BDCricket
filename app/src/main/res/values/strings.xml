@@ -28,13 +28,19 @@
     <string name="banner_ad_unit_id">ca-app-pub-6308034132891583/8026837955</string>
     <string name="rate_it">Rate it </string>
     <string name="live_score">Live Score</string>
+    <string name="highlights">Highlights</string>
     <string name="live_streaming">Live Streaming</string>
     <string name="invite">Invite Friends</string>
-    <string name="invite_message">Hey! I am using "বাংলাদেশ ক্রিকেট" app for live score and live streaming of T20 world cup 2016 from the below link. You can also enjoy it and keep roaring for Bangladeshi Tigers. Link: https://play.google.com/store/apps/details?id=com.codeartist.bdcricketteam</string>
+    <string name="like_us">Like Us</string>
+    <string name="invite_message">Hey! I am using \"বাংলাদেশ ক্রিকেট\" app for live score and live streaming of T20 world cup 2016 from the below link. You can also enjoy it and keep roaring for Bangladeshi Tigers. Link: https://play.google.com/store/apps/details?id=com.codeartist.bdcricketteam</string>
     <string name="smsinvite">sms invitation</string>
     <string name="whatsappinvite">whats app invitation</string>
     <string name="otherinvite">Invite with other ways</string>
     <string name="live_score_connect_to_internet">For live score please connect to internet</string>
     <string name="no_match">No match is going  on today</string>
     <string name="youtube_api_key">AIzaSyBGEocS3tNHyI_fag19EvD8AI7AmgMNwHw</string>
+    <string name="update_title">Update version</string>
+    <string name="update_message">New updated version of \"বাংলাদেশ ক্রিকেট- BD Cricket \" is available in google play store. Do you want to update?</string>
+    <string name="update_now">Update Now</string>
+    <string name="later">Later</string>
 </resources>

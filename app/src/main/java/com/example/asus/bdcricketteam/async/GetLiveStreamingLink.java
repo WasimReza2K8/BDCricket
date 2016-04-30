@@ -2,9 +2,7 @@ package com.example.asus.bdcricketteam.async;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 
 import org.json.JSONException;
@@ -44,7 +42,7 @@ public class GetLiveStreamingLink extends AsyncTask<Void, Void, String> {
             while ((str = in.readLine()) != null) {
                 total.append(str);
             }
-            Log.e("livestreaming", total.toString());
+           // Log.e("livestreaming", total.toString());
             parseJSONGetData(total.toString());
             in.close();
         } catch (MalformedURLException e) {

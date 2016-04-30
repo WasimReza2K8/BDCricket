@@ -139,6 +139,6 @@ public class GetUpcomingTournament extends AsyncTask<Void, Void, String> {
         if (mUiRefreshCallBack != null) {
             mUiRefreshCallBack.onProgress(70);
         }
-        Log.e("final ", result);
+       // Log.e("final ", result);
     }
 }
