@@ -45,8 +45,10 @@ public class HighlightsRecyclerAdapter extends RecyclerView.Adapter<HighlightsRe
     public void onBindViewHolder(final HighlightsRecyclerAdapter.ViewHolder holder, int position) {
         holder.mTextViewTitle.setText(SecureProcessor.onDecrypt(news.get(position).getTitle()));
         holder.mTextViewDuration.setText(SecureProcessor.onDecrypt(news.get(position).getDuration()));
+        holder.mTextViewDuration.setVisibility(View.GONE);
+        holder.mProgressBar.setVisibility(View.VISIBLE);
         String link = news.get(position).getImageLink();
-        String fullLink = "http://img.youtube.com/vi/"+link+"/0.jpg";
+        String fullLink = "http://img.youtube.com/vi/" + link + "/0.jpg";
         Glide.with(mContext)
                 .load(fullLink)
                 .placeholder(R.mipmap.app_icon) // can also be a drawable

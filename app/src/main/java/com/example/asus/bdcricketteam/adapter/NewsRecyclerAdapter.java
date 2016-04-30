@@ -51,6 +51,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mTextViewTitle.setText(SecureProcessor.onDecrypt(news.get(position).getTitle()));
         holder.mTextViewDetail.setText(SecureProcessor.onDecrypt(news.get(position).getFullNews()));
+        holder.mProgressBar.setVisibility(View.VISIBLE);
         Glide.with(mContext)
                 .load(news.get(position).getImageLink())
                 .placeholder(R.mipmap.app_icon) // can also be a drawable
