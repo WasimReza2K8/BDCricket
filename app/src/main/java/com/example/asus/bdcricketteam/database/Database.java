@@ -21,7 +21,7 @@ import java.util.List;
 public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "T20";
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 2;
     private static Database instance = null;
     private static SQLiteDatabase database = null;
     public static final String NATIONAL_TEAM_FIXTURE_TABLE = "national_team_fixture";
@@ -198,11 +198,21 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        /*db.execSQL("DROP TABLE IF EXISTS " + NATIONAL_TEAM_FIXTURE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEST);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_T20);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ODI);
+        db.execSQL("DROP TABLE IF EXISTS " + SQUAD_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + NEWS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + UPCOMING_TOURNAMENT_FIXTURE);
+        db.execSQL("DROP TABLE IF EXISTS " + HIGHLIGHTS_TABLE);*/
+
         onCreate(db);
     }
 
     public static synchronized long insertFixtureValues(FixtureDataModel model, String tableName) {
         ContentValues cv = new ContentValues();
+
         cv.put(COLUMN_DATE, model.getDate());
         cv.put(COLUMN_BETWEEN, model.getBetween());
         cv.put(COLUMN_VENUE, model.getVenue());

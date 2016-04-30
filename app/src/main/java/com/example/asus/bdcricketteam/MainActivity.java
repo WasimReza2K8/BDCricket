@@ -8,6 +8,7 @@ import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,8 +32,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.asus.bdcricketteam.ads.GoogleAds;
+import com.example.asus.bdcricketteam.async.GetHighlightsData;
 import com.example.asus.bdcricketteam.async.GetVersionUpdate;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
+import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.interfaceui.UpdatePopupCallBack;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                                 // fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                                 fragTransaction.replace(content.getId(), otherEventFragment).addToBackStack("tag3");
                                 fragTransaction.commit();
-                               // Log.e("tournamentname", OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() + "");
+                                // Log.e("tournamentname", OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() + "");
                                 if (OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() != null
                                         && !OnPreferenceManager.getInstance(MainActivity.this).getTournamentName().equalsIgnoreCase("")) {
                                     toolbar.setTitle(SecureProcessor.onDecrypt(OnPreferenceManager.getInstance(MainActivity.this).getTournamentName()));

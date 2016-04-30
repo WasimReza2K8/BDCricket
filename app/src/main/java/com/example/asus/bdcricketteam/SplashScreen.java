@@ -2,6 +2,8 @@ package com.example.asus.bdcricketteam;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.media.audiofx.BassBoost;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -79,13 +81,25 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         };
-        getUpdate();
+        try {
+            getUpdate();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void getUpdate() {
+    public void getUpdate() throws PackageManager.NameNotFoundException {
 
         if (ConnectionDetector.getInstance(this).isConnectingToInternet()) {
             int hour = 0;
+            PackageInfo packageInfo = getPackageManager()
+                    .getPackageInfo(getPackageName(), 0);
+            int versionCode = packageInfo.versionCode;
+            boolean onUpgrade = versionCode > OnPreferenceManager.getInstance(this).getAppVersionCode();
+            if (onUpgrade) {
+                OnPreferenceManager.getInstance(this).setAppVersionCode(versionCode);
+            }
+
             if (OnPreferenceManager.getInstance(this).getIsFirstTime()) {
                 OnPreferenceManager.getInstance(this).setIsFirstTime(false);
                 OnPreferenceManager.getInstance(this).setDate(System.currentTimeMillis());
@@ -96,7 +110,7 @@ public class SplashScreen extends AppCompatActivity {
                 Long timeDifference = System.currentTimeMillis() - OnPreferenceManager.getInstance(this).getDate();
                 hour = (int) (timeDifference / (60 * 1000));
 
-                if (hour > 10) {
+                if (hour > 10 || onUpgrade) {
                     loadData();
                     OnPreferenceManager.getInstance(this).setDate(System.currentTimeMillis());
                 } else if (loadingData) {

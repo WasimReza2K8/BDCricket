@@ -25,6 +25,7 @@ public class OnPreferenceManager {
     private String numberOfNews = "numberOfNews";
     private String isFirstTime = "isFirstTime";
     private String liveStreamLink = "liveStreamLink";
+    private String APP_VERSION_CODE = "app_version_code";
     private String defaultLiveStreamingLink = "OIaPQMtCkRc";
     private static OnPreferenceManager sOnPreferenceManager;
 
@@ -48,6 +49,16 @@ public class OnPreferenceManager {
 
     public synchronized int getNewsUpdate() {
         int selectionStart = prefs.getInt(newsUpdate, 1);
+        return selectionStart;
+    }
+
+    public synchronized void setAppVersionCode(int news) {
+        editor.putInt(APP_VERSION_CODE, news);
+        editor.apply();
+    }
+
+    public synchronized int getAppVersionCode() {
+        int selectionStart = prefs.getInt(APP_VERSION_CODE, 1);
         return selectionStart;
     }
 
