@@ -6,10 +6,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,7 @@ public class NationalTeamFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+    private Tracker mTracker;
 
     @Nullable
     @Override
@@ -41,6 +47,11 @@ public class NationalTeamFragment extends Fragment {
                 return false;
             }
         });
+        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         return rootView;
     }
 

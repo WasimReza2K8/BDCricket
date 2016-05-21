@@ -1,11 +1,16 @@
-<resources>>
+<resources>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <!-- specify shared element transitions -->
+        <!-- <item name="android:windowSharedElementEnterTransition">@transition/changebounds</item>
+         <item name="android:windowSharedElementExitTransition">@transition/changebounds</item>-->
     </style>
+
+
     <style name="cardPaddingStyle">
         <item name="android:paddingTop">@dimen/paddingTop</item>
         <item name="android:paddingBottom">@dimen/paddingBottom</item>

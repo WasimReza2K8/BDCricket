@@ -2,11 +2,15 @@ package com.example.asus.bdcricketteam;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -21,6 +25,7 @@ public class LiveStreamingActivity extends YouTubeBaseActivity
     private YouTubePlayerFragment youTubePlayerFragment;
     private AdView mAdView;
     private Toolbar mToolbar;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -33,6 +38,8 @@ public class LiveStreamingActivity extends YouTubeBaseActivity
         AdRequest adRequest = new AdRequest.Builder().build();
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
+        ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
+        mTracker = application.getDefaultTracker();
         youTubePlayerFragment.initialize(getResources().getString(R.string.youtube_api_key), this);
     }
 
@@ -56,6 +63,9 @@ public class LiveStreamingActivity extends YouTubeBaseActivity
 
     @Override
     public void onResume() {
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         super.onResume();
         if (mAdView != null) {
             mAdView.resume();

@@ -2,23 +2,30 @@ package com.example.asus.bdcricketteam;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.asus.bdcricketteam.ads.GoogleAds;
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by ASUS on 2/28/2016.
  */
 public class NewsDetailActivity extends AppCompatActivity {
     private AdView mAdView;
+    private Toolbar mToolbar;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,8 @@ public class NewsDetailActivity extends AppCompatActivity {
         TextView title, detail;
         ImageView imageView;
         Database.init(this);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.detail));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NewsDataModel model = Database.getNews(id);
@@ -39,13 +48,23 @@ public class NewsDetailActivity extends AppCompatActivity {
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
         GoogleAds.getGoogleAds(this).requestNewInterstitial();
+        ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
+        mTracker = application.getDefaultTracker();
+
         title.setText(SecureProcessor.onDecrypt(model.getTitle()));
         detail.setText(fixToNewline(SecureProcessor.onDecrypt(model.getFullNews())));
-        Glide.with(this)
+        Picasso.with(this)
                 .load(model.getImageLink())
                 .into(imageView);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.slide_left, R.anim.slide_left_in);
+    }
 
     public String fixToNewline(String orig) {
         char[] chars = orig.toCharArray();
@@ -71,6 +90,7 @@ public class NewsDetailActivity extends AppCompatActivity {
             case android.R.id.home:
                 // NavUtils.navigateUpFromSameTask(this);
                 finish();
+                overridePendingTransition(R.anim.slide_left, R.anim.slide_left_in);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -80,6 +100,9 @@ public class NewsDetailActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         if (mAdView != null) {
             mAdView.resume();
         }

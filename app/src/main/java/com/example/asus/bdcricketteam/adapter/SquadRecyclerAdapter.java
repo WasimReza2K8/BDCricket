@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.datamodel.SquadModel;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class SquadRecyclerAdapter extends RecyclerView.Adapter<SquadRecyclerAdap
         holder.mTextViewPlayerStyle.setText(mContext.getResources().getString(R.string.style) + ": "
                 + (SecureProcessor.onDecrypt(news.get(position).getStyle())));
         holder.mTextViewPlayerName.setText(SecureProcessor.onDecrypt(news.get(position).getPlayerName()));
-        Glide.with(mContext)
+        Picasso.with(mContext)
                 .load(news.get(position).getImageLink())
                 .into(holder.mImageViewPlayerImage);
     }

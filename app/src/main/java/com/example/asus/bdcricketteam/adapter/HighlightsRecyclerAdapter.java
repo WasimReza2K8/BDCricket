@@ -9,17 +9,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
 import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.datamodel.HighlightsDataModel;
-import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by ASUS on 4/30/2016.
@@ -49,28 +45,24 @@ public class HighlightsRecyclerAdapter extends RecyclerView.Adapter<HighlightsRe
         holder.mProgressBar.setVisibility(View.VISIBLE);
         String link = news.get(position).getImageLink();
         String fullLink = "http://img.youtube.com/vi/" + link + "/0.jpg";
-        Glide.with(mContext)
+        Picasso.with(mContext)
                 .load(fullLink)
                 .placeholder(R.mipmap.app_icon) // can also be a drawable
                 .error(R.mipmap.app_icon) // will be displayed if the image cannot be loaded
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .resize(100, 100)
+                .centerCrop()
+                .into(holder.mNewsImage, new Callback() {
                     @Override
-                    public boolean onException(Exception e, String model, com.bumptech.glide.request.target.Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, com.bumptech.glide.request.target.Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public void onSuccess() {
                         holder.mProgressBar.setVisibility(View.GONE);
                         holder.mTextViewDuration.setVisibility(View.VISIBLE);
-                        return false;
                     }
 
-                })
-                .dontAnimate()
-                .override(100, 100)
-                .centerCrop()
-                .into(holder.mNewsImage);
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 
     @Override

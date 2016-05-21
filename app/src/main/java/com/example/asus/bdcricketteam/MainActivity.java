@@ -8,7 +8,6 @@ import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,15 +31,16 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.asus.bdcricketteam.ads.GoogleAds;
-import com.example.asus.bdcricketteam.async.GetHighlightsData;
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.async.GetVersionUpdate;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
-import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.interfaceui.UpdatePopupCallBack;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private UpdatePopupCallBack updatePopupCallBack;
     private int timeDelay = 350;
     FragmentTransaction fragTransaction;
+    private Tracker mTracker;
     public String fixtureFileURl = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwdHRvSjB2UlVTdTA";
     public static final String EMPTY_STRING = "";
     //https://drive.google.com/file/d/0B85b1FRNOEQwdHRvSjB2UlVTdTA/view?usp=sharing
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
+        ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
+        mTracker = application.getDefaultTracker();
         fragTransaction = getSupportFragmentManager().beginTransaction();
         NewsFragment base = new NewsFragment();
         toolbar.setTitle(getResources().getString(R.string.app_name));
@@ -222,10 +225,18 @@ public class MainActivity extends AppCompatActivity {
                         // toolbar.setTitle(getResources().getString(R.string.live_streaming));
                         return true;
                     case R.id.invite:
+                        mTracker.send(new HitBuilders.EventBuilder()
+                                .setCategory("Action")
+                                .setAction("Share")
+                                .build());
                         showInvitePopup();
                         menuItem.setChecked(false);
                         return true;
                     case R.id.like:
+                        mTracker.send(new HitBuilders.EventBuilder()
+                                .setCategory("Action")
+                                .setAction("like")
+                                .build());
                         getOpenFacebookIntent();
                         menuItem.setChecked(false);
                         return true;

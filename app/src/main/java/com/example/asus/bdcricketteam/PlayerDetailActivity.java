@@ -6,11 +6,11 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.CareerDataModel;
 import com.example.asus.bdcricketteam.datamodel.SquadModel;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by ASUS on 2/22/2016.
@@ -38,7 +38,7 @@ public class PlayerDetailActivity extends AppCompatActivity {
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(SecureProcessor.onDecrypt(squadModel.getPlayerName()));
         ImageView imageView = (ImageView) findViewById(R.id.image);
-        Glide.with(this)
+        Picasso.with(this)
                 .load(squadModel.getImageLink())
                 .into(imageView);
 

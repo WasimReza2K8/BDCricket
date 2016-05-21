@@ -3,6 +3,8 @@ package com.example.asus.bdcricketteam;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -11,7 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.asus.bdcricketteam.ads.GoogleAds;
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 /**
  * Created by ASUS on 3/6/2016.
@@ -21,6 +26,7 @@ public class LiveScoreActivity extends AppCompatActivity {
     private AdView mAdView;
     private WebView mWebview;
     private ProgressBar mProgressBar;
+    private Tracker mTracker;
 
     public LiveScoreActivity() {
     }
@@ -30,10 +36,15 @@ public class LiveScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_score);
         String link = getIntent().getStringExtra("link");
         mAdView = (AdView) findViewById(R.id.ad_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.live_score));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBarLoading);
         com.google.android.gms.ads.AdRequest adrequest = (new com.google.android.gms.ads.AdRequest.Builder()).addTestDevice("18D9D4FB40DF048C506091E42E0FDAFD").build();
+        ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
+        mTracker = application.getDefaultTracker();
+
         mAdView.loadAd(adrequest);
         mWebview = (WebView) findViewById(R.id.webview_liveScore);
         mWebview.getSettings().setJavaScriptEnabled(true);
@@ -73,11 +84,18 @@ public class LiveScoreActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.slide_left, R.anim.slide_left_in);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // NavUtils.navigateUpFromSameTask(this);
-                finish();
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -98,10 +116,13 @@ public class LiveScoreActivity extends AppCompatActivity {
      */
     @Override
     public void onDestroy() {
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         if (mAdView != null) {
             mAdView.destroy();
         }
-     //   GoogleAds.getGoogleAds(this).showInterstitial();
+        //   GoogleAds.getGoogleAds(this).showInterstitial();
         super.onDestroy();
     }
 

@@ -1,7 +1,8 @@
 package com.example.asus.bdcricketteam;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,33 +15,35 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.example.asus.bdcricketteam.adapter.NewsRecyclerAdapter;
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by ASUS on 2/6/2016.
  */
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
     private RecyclerView mRecyclerView;
     private TextView mTextView;
     private ProgressBar mProgressBar;
     private NewsRecyclerAdapter adapter;
     private List<NewsDataModel> list;
+    private SliderLayout mDemoSlider;
+    private Tracker mTracker;
 
     //https://drive.google.com/open?id=0B85b1FRNOEQwR2c2SGNVUHVFdXc
     //https://drive.google.com/open?id=0B85b1FRNOEQwR2c2SGNVUHVFdXc
@@ -54,6 +57,7 @@ public class NewsFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.newsRecyclerView);
         mTextView = (TextView) rootView.findViewById(R.id.textViewLoading);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
+        mDemoSlider = (SliderLayout) rootView.findViewById(R.id.slider);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         //new GetNews().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -65,9 +69,25 @@ public class NewsFragment extends Fragment {
                 Intent i = new Intent(getActivity(), NewsDetailActivity.class);
                 i.putExtra("id", list.get(position).getId());
                 startActivity(i);
+                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+              /*  Intent i = new Intent(getActivity(), NewsDetailActivity.class);
+                i.putExtra("id", list.get(position).getId());
+                View sharedView = view;
+                String transitionName = "trans";
+
+                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(getActivity(), sharedView, transitionName);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    getActivity().startActivity(i, transitionActivityOptions.toBundle());
+                }*/
             }
         }));
         setRecyclerView();
+        setSlider();
+        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         return rootView;
     }
 
@@ -78,6 +98,41 @@ public class NewsFragment extends Fragment {
         list = Database.getAllNews();
     }
 
+    private void setSlider() {
+        HashMap<Integer, String> sliderMap = new HashMap();
+        // int count = 0;
+        if(list.size() == 0){
+            return;
+        }
+        for (int i = 0; i < 5; i++) {
+            sliderMap.put(i, list.get(i).getImageLink());
+            //count++;
+        }
+
+        for (int position : sliderMap.keySet()) {
+            TextSliderView textSliderView = new TextSliderView(getActivity());
+
+            // initialize a SliderLayout
+            textSliderView
+                    .description(SecureProcessor.onDecrypt(list.get(position).getTitle()))
+                    .image(sliderMap.get(position))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(this);
+
+            //add your extra information
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle()
+                    .putInt("extra", position);
+
+            mDemoSlider.addSlider(textSliderView);
+        }
+        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.RotateUp);
+        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Right_Bottom);
+        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+        mDemoSlider.setDuration(3000);
+        mDemoSlider.addOnPageChangeListener(this);
+    }
+
     private void setRecyclerView() {
         getAllDataFromDb();
         if (list.size() > 0) {
@@ -85,6 +140,30 @@ public class NewsFragment extends Fragment {
             adapter = new NewsRecyclerAdapter(getActivity(), list);
             mRecyclerView.setAdapter(adapter);
         }
+
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+        int position = slider.getBundle().getInt("extra");
+        Intent i = new Intent(getActivity(), NewsDetailActivity.class);
+        i.putExtra("id", list.get(position).getId());
+        startActivity(i);
+        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
     }
 }

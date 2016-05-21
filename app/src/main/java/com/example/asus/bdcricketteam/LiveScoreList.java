@@ -18,9 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.asus.bdcricketteam.adapter.LiveScoreListAdapter;
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.datamodel.LiveScoreDataModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -45,11 +48,12 @@ public class LiveScoreList extends Fragment {
     private ProgressBar mProgressBar;
     private LiveScoreListAdapter adapter;
     private List<LiveScoreDataModel> list;
+    private Tracker mTracker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.news_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_highlights, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.newsRecyclerView);
         mTextView = (TextView) rootView.findViewById(R.id.textViewLoading);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
@@ -61,6 +65,7 @@ public class LiveScoreList extends Fragment {
                 Intent i = new Intent(getActivity(), LiveScoreActivity.class);
                 i.putExtra("link", list.get(position).getLink());
                 startActivity(i);
+                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         }));
         //  setRecyclerView();
@@ -71,6 +76,11 @@ public class LiveScoreList extends Fragment {
             mTextView.setText(getActivity().getResources().getString(R.string.live_score_connect_to_internet));
             mTextView.setVisibility(View.VISIBLE);
         }
+        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         //new GetLiveLink(getActivity()).execute();
         return rootView;
     }
@@ -153,7 +163,7 @@ public class LiveScoreList extends Fragment {
         protected void onPostExecute(String result) {
             String url = null;
 
-            for (int i = title.size()-1; i > 0; i--) {
+            for (int i = title.size() - 1; i > 0; i--) {
                 //if (title.get(i).contains("Bangladesh")) {
                 Log.e("url", link.get(i));
                 LiveScoreDataModel model = new LiveScoreDataModel();

@@ -4,18 +4,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.media.audiofx.BassBoost;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.asus.bdcricketteam.async.GetHighlightsData;
 import com.example.asus.bdcricketteam.async.GetLiveStreamingLink;
@@ -24,25 +26,8 @@ import com.example.asus.bdcricketteam.async.GetSchedule;
 import com.example.asus.bdcricketteam.async.GetSquad;
 import com.example.asus.bdcricketteam.async.GetUpcomingTournament;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
-import com.example.asus.bdcricketteam.database.Database;
-import com.example.asus.bdcricketteam.datamodel.CareerDataModel;
-import com.example.asus.bdcricketteam.datamodel.FixtureDataModel;
-import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
-import com.example.asus.bdcricketteam.datamodel.SquadModel;
 import com.example.asus.bdcricketteam.interfaceui.UIRefreshCallBack;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
-import com.example.asus.bdcricketteam.security.SecureProcessor;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ASUS on 2/15/2016.
@@ -64,6 +49,20 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
+        ImageView appIcon = (ImageView) findViewById(R.id.appImage);
+        TextView appName = (TextView) findViewById(R.id.appName);
+        Animation anim = new ScaleAnimation(
+                0f, 1f, // Start and end values for the X axis scaling
+                0, 1f, // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
+        anim.setFillAfter(true); // Needed to keep the result of the animation
+        anim.setDuration(2000);
+        appIcon.startAnimation(anim);
+        Animation animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fade_in);
+        animFadeIn.setFillAfter(true);
+        appName.startAnimation(animFadeIn);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBarLoading);
         loadingData = false;
     }

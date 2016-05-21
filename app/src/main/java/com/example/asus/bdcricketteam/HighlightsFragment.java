@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,15 @@ import android.widget.TextView;
 
 import com.example.asus.bdcricketteam.adapter.HighlightsRecyclerAdapter;
 import com.example.asus.bdcricketteam.adapter.NewsRecyclerAdapter;
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.HighlightsDataModel;
 import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +41,12 @@ public class HighlightsFragment extends Fragment {
     private ProgressBar mProgressBar;
     private HighlightsRecyclerAdapter adapter;
     private List<HighlightsDataModel> list;
+    private Tracker mTracker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.news_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_highlights, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.newsRecyclerView);
         mTextView = (TextView) rootView.findViewById(R.id.textViewLoading);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
@@ -62,6 +67,12 @@ public class HighlightsFragment extends Fragment {
             }
         }));
         setRecyclerView();
+        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         return rootView;
     }
 

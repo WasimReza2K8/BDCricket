@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.asus.bdcricketteam.adapter.NewsRecyclerAdapter;
 import com.example.asus.bdcricketteam.adapter.SquadRecyclerAdapter;
+import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.CareerDataModel;
@@ -24,6 +25,8 @@ import com.example.asus.bdcricketteam.datamodel.SquadModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +48,7 @@ public class NationalTeamSquard extends Fragment {
     private List<SquadModel> list;
     private SquadRecyclerAdapter adapter;
     private RecyclerView mRecyclerView;
+    private Tracker mTracker;
 
     //https://drive.google.com/file/d/0B85b1FRNOEQwOEk3VUx3LTIxZHc/view?usp=sharing
     @Nullable
@@ -54,11 +58,6 @@ public class NationalTeamSquard extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.squadRecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        if (ConnectionDetector.getInstance(getActivity()).isConnectingToInternet()) {
-           // new GetSquad().execute();
-        } else {
-            setRecyclerView();
-        }
         setRecyclerView();
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -80,6 +79,11 @@ public class NationalTeamSquard extends Fragment {
                 return false;
             }
         });
+        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+        Log.i("screen", "Setting screen name: " + this.toString());
+        mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         return rootView;
     }
 
