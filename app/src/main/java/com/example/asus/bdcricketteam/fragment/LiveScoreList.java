@@ -1,4 +1,4 @@
-package com.example.asus.bdcricketteam;
+package com.example.asus.bdcricketteam.fragment;
 
 
 import android.app.ProgressDialog;
@@ -17,13 +17,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.asus.bdcricketteam.LiveScoreActivity;
+import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.adapter.LiveScoreListAdapter;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.datamodel.LiveScoreDataModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -48,7 +47,7 @@ public class LiveScoreList extends Fragment {
     private ProgressBar mProgressBar;
     private LiveScoreListAdapter adapter;
     private List<LiveScoreDataModel> list;
-    private Tracker mTracker;
+   // private Tracker mTracker;
 
     @Nullable
     @Override
@@ -76,11 +75,11 @@ public class LiveScoreList extends Fragment {
             mTextView.setText(getActivity().getResources().getString(R.string.live_score_connect_to_internet));
             mTextView.setVisibility(View.VISIBLE);
         }
-        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+       /* ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         //new GetLiveLink(getActivity()).execute();
         return rootView;
     }

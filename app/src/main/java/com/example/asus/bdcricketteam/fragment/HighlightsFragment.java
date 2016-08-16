@@ -1,4 +1,4 @@
-package com.example.asus.bdcricketteam;
+package com.example.asus.bdcricketteam.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,17 +16,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.asus.bdcricketteam.HighlightsVideoActivity;
+import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.adapter.HighlightsRecyclerAdapter;
-import com.example.asus.bdcricketteam.adapter.NewsRecyclerAdapter;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
+
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.HighlightsDataModel;
-import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ public class HighlightsFragment extends Fragment {
     private ProgressBar mProgressBar;
     private HighlightsRecyclerAdapter adapter;
     private List<HighlightsDataModel> list;
-    private Tracker mTracker;
+    //private Tracker mTracker;
 
     @Nullable
     @Override
@@ -67,11 +66,11 @@ public class HighlightsFragment extends Fragment {
             }
         }));
         setRecyclerView();
-        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+       /* ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
 
         return rootView;
     }

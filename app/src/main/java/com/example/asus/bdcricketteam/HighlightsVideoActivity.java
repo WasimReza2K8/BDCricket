@@ -1,16 +1,8 @@
 package com.example.asus.bdcricketteam;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
-import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -24,7 +16,7 @@ public class HighlightsVideoActivity extends YouTubeBaseActivity
 
     private YouTubePlayerFragment youTubePlayerFragment;
     private String link;
-    private Tracker mTracker;
+    //private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -32,11 +24,11 @@ public class HighlightsVideoActivity extends YouTubeBaseActivity
         setContentView(R.layout.activity_highlights_video);
         youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager()
                 .findFragmentById(R.id.youtube_fragment);
-        ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
+        /*ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         link = getIntent().getExtras().getString("link");
         youTubePlayerFragment.initialize(getResources().getString(R.string.youtube_api_key), this);
     }

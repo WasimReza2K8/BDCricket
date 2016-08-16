@@ -1,6 +1,5 @@
-package com.example.asus.bdcricketteam;
+package com.example.asus.bdcricketteam.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,25 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.adapter.FixtureAdapter;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
-import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.FixtureDataModel;
-import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
-import com.example.asus.bdcricketteam.security.SecureProcessor;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -39,7 +24,7 @@ public class UpcomingTournament extends Fragment {
     private ArrayList<FixtureDataModel> list;
     private FixtureAdapter adapter;
     private RecyclerView mRecyclerView;
-    private Tracker mTracker;
+   // private Tracker mTracker;
 
     @Nullable
     @Override
@@ -53,11 +38,11 @@ public class UpcomingTournament extends Fragment {
         //List<FixtureDataModel> fixture = Database.getAll(Database.NATIONAL_TEAM_FIXTURE_TABLE);
         //textView.setText(SecureProcessor.onDecrypt(fixture.get(0).getBetween()));
         setRecyclerView();
-        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+       /* ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         return rootView;
     }
 

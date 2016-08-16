@@ -265,8 +265,8 @@ public class Database extends SQLiteOpenHelper {
     public static synchronized long insertNewsValues(NewsDataModel model) {
         ContentValues cv = new ContentValues();
         cv.put(NEWS_TITLE, model.getTitle());
-        cv.put(NEWS_DETAIL, model.getFullNews());
-        cv.put(NEWS_IMAGE_LINK, model.getImageLink());
+        cv.put(NEWS_DETAIL, model.getDetail());
+        cv.put(NEWS_IMAGE_LINK, model.getImagelink());
 
         return getDatabase().insert(NEWS_TABLE, null, cv);
     }
@@ -510,10 +510,10 @@ public class Database extends SQLiteOpenHelper {
 
             do {
                 NewsDataModel model = new NewsDataModel();
-                model.setId(c.getInt(0));
+                //model.setId(c.getInt(0));
                 model.setTitle(c.getString(1));
-                model.setFullNews(c.getString(2));
-                model.setImageLink(c.getString(3));
+                model.setDetail(c.getString(2));
+                model.setImagelink(c.getString(3));
 
                 list.add(model);
 
@@ -574,10 +574,10 @@ public class Database extends SQLiteOpenHelper {
 
             do {
 
-                model.setId(c.getInt(0));
+                //model.setId(c.getInt(0));
                 model.setTitle(c.getString(1));
-                model.setFullNews(c.getString(2));
-                model.setImageLink(c.getString(3));
+                model.setDetail(c.getString(2));
+                model.setImagelink(c.getString(3));
 
 
             } while (c.moveToNext());

@@ -1,42 +1,20 @@
 package com.example.asus.bdcricketteam;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.asus.bdcricketteam.adapter.NewsRecyclerAdapter;
 import com.example.asus.bdcricketteam.adapter.SquadRecyclerAdapter;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
-import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.database.Database;
-import com.example.asus.bdcricketteam.datamodel.CareerDataModel;
-import com.example.asus.bdcricketteam.datamodel.FixtureDataModel;
-import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.datamodel.SquadModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
-import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
-import com.example.asus.bdcricketteam.security.SecureProcessor;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +26,7 @@ public class NationalTeamSquard extends Fragment {
     private List<SquadModel> list;
     private SquadRecyclerAdapter adapter;
     private RecyclerView mRecyclerView;
-    private Tracker mTracker;
+    //private Tracker mTracker;
 
     //https://drive.google.com/file/d/0B85b1FRNOEQwOEk3VUx3LTIxZHc/view?usp=sharing
     @Nullable
@@ -79,11 +57,11 @@ public class NationalTeamSquard extends Fragment {
                 return false;
             }
         });
-        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        /*ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         return rootView;
     }
 
@@ -165,7 +143,7 @@ public class NationalTeamSquard extends Fragment {
                 style = news.getString("style");
                 model.setStyle(style.trim());
                 imageLink = news.getString("imageLink");
-                model.setImageLink(imageLink);
+                model.setImagelink(imageLink);
                 Database.insertSquadValues(model, Database.SQUAD_TABLE);
                 career = news.getString("Career");
                 careerParser(career, id);

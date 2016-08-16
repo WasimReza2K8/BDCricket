@@ -101,9 +101,9 @@ public class GetNews extends AsyncTask<Void, Void, String> {
             title = news.getString("title");
             model.setTitle(SecureProcessor.onEncrypt(title.trim()));
             detail = news.getString("detail");
-            model.setFullNews(SecureProcessor.onEncrypt(detail.trim()));
+            model.setDetail(SecureProcessor.onEncrypt(detail.trim()));
             imageLink = news.getString("imagelink");
-            model.setImageLink(imageLink);
+            model.setImagelink(imageLink);
             Database.insertNewsValues(model);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,14 +1,11 @@
-package com.example.asus.bdcricketteam;
+package com.example.asus.bdcricketteam.fragment;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +17,13 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.asus.bdcricketteam.NewsDetailActivity;
+import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.adapter.NewsRecyclerAdapter;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.onlclick.RecyclerItemClickListener;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +39,7 @@ public class NewsFragment extends Fragment implements BaseSliderView.OnSliderCli
     private NewsRecyclerAdapter adapter;
     private List<NewsDataModel> list;
     private SliderLayout mDemoSlider;
-    private Tracker mTracker;
+    //private Tracker mTracker;
 
     //https://drive.google.com/open?id=0B85b1FRNOEQwR2c2SGNVUHVFdXc
     //https://drive.google.com/open?id=0B85b1FRNOEQwR2c2SGNVUHVFdXc
@@ -67,7 +63,7 @@ public class NewsFragment extends Fragment implements BaseSliderView.OnSliderCli
             @Override
             public void onItemClick(View view, int position) {
                 Intent i = new Intent(getActivity(), NewsDetailActivity.class);
-                i.putExtra("id", list.get(position).getId());
+               // i.putExtra("id", list.get(position).getId());
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
               /*  Intent i = new Intent(getActivity(), NewsDetailActivity.class);
@@ -83,11 +79,11 @@ public class NewsFragment extends Fragment implements BaseSliderView.OnSliderCli
         }));
         setRecyclerView();
         setSlider();
-        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        /*ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         return rootView;
     }
 
@@ -105,7 +101,7 @@ public class NewsFragment extends Fragment implements BaseSliderView.OnSliderCli
             return;
         }
         for (int i = 0; i < 5; i++) {
-            sliderMap.put(i, list.get(i).getImageLink());
+            sliderMap.put(i, list.get(i).getImagelink());
             //count++;
         }
 
@@ -147,7 +143,7 @@ public class NewsFragment extends Fragment implements BaseSliderView.OnSliderCli
     public void onSliderClick(BaseSliderView slider) {
         int position = slider.getBundle().getInt("extra");
         Intent i = new Intent(getActivity(), NewsDetailActivity.class);
-        i.putExtra("id", list.get(position).getId());
+        //i.putExtra("id", list.get(position).getId());
         startActivity(i);
         getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }

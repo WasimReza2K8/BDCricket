@@ -46,10 +46,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mTextViewTitle.setText(SecureProcessor.onDecrypt(news.get(position).getTitle()));
-        holder.mTextViewDetail.setText(SecureProcessor.onDecrypt(news.get(position).getFullNews()));
+        holder.mTextViewDetail.setText(SecureProcessor.onDecrypt(news.get(position).getDetail()));
         holder.mProgressBar.setVisibility(View.VISIBLE);
         Picasso.with(mContext)
-                .load(news.get(position).getImageLink())
+                .load(news.get(position).getImagelink())
                 .placeholder(R.mipmap.app_icon) // can also be a drawable
                 .error(R.mipmap.app_icon) // will be displayed if the image cannot be loaded
                 .resize(100, 100)

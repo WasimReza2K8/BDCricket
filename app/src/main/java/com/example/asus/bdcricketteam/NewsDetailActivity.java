@@ -9,14 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.asus.bdcricketteam.ads.GoogleAds;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.database.Database;
 import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -25,13 +22,13 @@ import com.squareup.picasso.Picasso;
 public class NewsDetailActivity extends AppCompatActivity {
     private AdView mAdView;
     private Toolbar mToolbar;
-    private Tracker mTracker;
+   // private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
-        int id = getIntent().getIntExtra("id", -1);
+        NewsDataModel model = (NewsDataModel) getIntent().getSerializableExtra("news");
         TextView title, detail;
         ImageView imageView;
         Database.init(this);
@@ -39,7 +36,7 @@ public class NewsDetailActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getResources().getString(R.string.detail));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        NewsDataModel model = Database.getNews(id);
+      //  NewsDataModel model = Database.getNews(id);
         title = (TextView) findViewById(R.id.title);
         detail = (TextView) findViewById(R.id.detail);
         imageView = (ImageView) findViewById(R.id.image);
@@ -48,13 +45,13 @@ public class NewsDetailActivity extends AppCompatActivity {
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
         GoogleAds.getGoogleAds(this).requestNewInterstitial();
-        ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
+        /*ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
         mTracker = application.getDefaultTracker();
-
-        title.setText(SecureProcessor.onDecrypt(model.getTitle()));
-        detail.setText(fixToNewline(SecureProcessor.onDecrypt(model.getFullNews())));
+*/
+        title.setText(model.getTitle());
+        detail.setText(fixToNewline(model.getDetail()));
         Picasso.with(this)
-                .load(model.getImageLink())
+                .load(model.getImagelink())
                 .into(imageView);
     }
 
@@ -101,8 +98,8 @@ public class NewsDetailActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.i("screen", "Setting screen name: " + this.toString());
-        mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+       /* mTracker.setScreenName("Image~" + this.toString());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         if (mAdView != null) {
             mAdView.resume();
         }

@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -125,9 +124,9 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
                 title = news.getString("title");
                 model.setTitle(SecureProcessor.onEncrypt(title.trim()));
                 detail = news.getString("detail");
-                model.setFullNews(SecureProcessor.onEncrypt(detail.trim()));
+                model.setDetail(SecureProcessor.onEncrypt(detail.trim()));
                 imageLink = news.getString("imagelink");
-                model.setImageLink(imageLink);
+                model.setImagelink(imageLink);
                 Database.insertNewsValues(model);
             } catch (JSONException e) {
                 e.printStackTrace();

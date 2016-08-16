@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "528771973588",
+    "firebase_url": "https://bd-cricket.firebaseio.com",
+    "project_id": "bd-cricket",
+    "storage_bucket": "bd-cricket.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528771973588:android:76b605044f4470c3",
+        "android_client_info": {
+          "package_name": "com.codeartist.bdcricketteam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528771973588-l8ugqqubtef38nv2p03fv09q0of2d3gj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codeartist.bdcricketteam",
+            "certificate_hash": "34642FAC5B8F4E74B9534DBFE12A108BE0F10817"
+          }
+        },
+        {
+          "client_id": "528771973588-r3qm717nsi232sgpuvk5d1c1rl704o2a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr2X9P476APkS8g7dN9INbrV4aE7SUWz8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528771973588-r3qm717nsi232sgpuvk5d1c1rl704o2a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

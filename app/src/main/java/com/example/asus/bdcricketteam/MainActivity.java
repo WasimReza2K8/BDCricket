@@ -31,16 +31,19 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.asus.bdcricketteam.ads.GoogleAds;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.async.GetVersionUpdate;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
+import com.example.asus.bdcricketteam.fragment.HighlightsFragment;
+import com.example.asus.bdcricketteam.fragment.LiveScoreList;
+import com.example.asus.bdcricketteam.fragment.NationalTeamFragment;
+import com.example.asus.bdcricketteam.fragment.NewsFragment;
+import com.example.asus.bdcricketteam.fragment.NewsFragmentFirebase;
+import com.example.asus.bdcricketteam.fragment.UpcomingTournament;
 import com.example.asus.bdcricketteam.interfaceui.UpdatePopupCallBack;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private UpdatePopupCallBack updatePopupCallBack;
     private int timeDelay = 350;
     FragmentTransaction fragTransaction;
-    private Tracker mTracker;
+    // private Tracker mTracker;
     public String fixtureFileURl = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwdHRvSjB2UlVTdTA";
     public static final String EMPTY_STRING = "";
     //https://drive.google.com/file/d/0B85b1FRNOEQwdHRvSjB2UlVTdTA/view?usp=sharing
@@ -73,10 +76,11 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
-        ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
-        mTracker = application.getDefaultTracker();
+        /*ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
+        mTracker = application.getDefaultTracker();*/
         fragTransaction = getSupportFragmentManager().beginTransaction();
-        NewsFragment base = new NewsFragment();
+        //NewsFragment base = new NewsFragment();
+        NewsFragmentFirebase base = new NewsFragmentFirebase();
         toolbar.setTitle(getResources().getString(R.string.app_name));
 
         updatePopupCallBack = new UpdatePopupCallBack() {
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // new GetFixture().execute();
-        GoogleAds.getGoogleAds(this).requestNewInterstitial();
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -126,8 +130,12 @@ public class MainActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                NewsFragmentFirebase main = (NewsFragmentFirebase) fragmentManager.findFragmentByTag("tag2");
+                                if (main == null) {
+                                    main = new NewsFragmentFirebase();
+                                }
                                 fragTransaction = fragmentManager.beginTransaction();
-                                NewsFragment main = new NewsFragment();
+                                //NewsFragment main = new NewsFragment();
                                 toolbar.setTitle(getResources().getString(R.string.app_name));
                                 //item.setVisible(false);
                                 //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
@@ -225,18 +233,18 @@ public class MainActivity extends AppCompatActivity {
                         // toolbar.setTitle(getResources().getString(R.string.live_streaming));
                         return true;
                     case R.id.invite:
-                        mTracker.send(new HitBuilders.EventBuilder()
+                       /* mTracker.send(new HitBuilders.EventBuilder()
                                 .setCategory("Action")
                                 .setAction("Share")
-                                .build());
+                                .build());*/
                         showInvitePopup();
                         menuItem.setChecked(false);
                         return true;
                     case R.id.like:
-                        mTracker.send(new HitBuilders.EventBuilder()
+                        /*mTracker.send(new HitBuilders.EventBuilder()
                                 .setCategory("Action")
                                 .setAction("like")
-                                .build());
+                                .build());*/
                         getOpenFacebookIntent();
                         menuItem.setChecked(false);
                         return true;

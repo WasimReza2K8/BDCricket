@@ -1,16 +1,18 @@
 package com.example.asus.bdcricketteam.datamodel;
 
+import java.io.Serializable;
+
 /**
  * Created by ASUS on 2/8/2016.
  */
-public class NewsDataModel {
-    public int getId() {
+public class NewsDataModel implements Serializable{
+   /* public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
+    }*/
 
     public String getTitle() {
         return title;
@@ -20,24 +22,24 @@ public class NewsDataModel {
         this.title = title;
     }
 
-    public String getFullNews() {
-        return fullNews;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setFullNews(String fullNews) {
-        this.fullNews = fullNews;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public String getImagelink() {
+        return imagelink;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setImagelink(String imagelink) {
+        this.imagelink = imagelink;
     }
 
     private int id;
     private String title;
-    private String fullNews;
-    private String imageLink;
+    private String detail;
+    private String imagelink;
 }

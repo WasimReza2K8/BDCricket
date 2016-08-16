@@ -1,6 +1,5 @@
-package com.example.asus.bdcricketteam;
+package com.example.asus.bdcricketteam.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,32 +10,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.adapter.FixtureAdapter;
-import com.example.asus.bdcricketteam.adapter.SquadRecyclerAdapter;
-import com.example.asus.bdcricketteam.analytics.ApplicationAnalytics;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.database.Database;
-import com.example.asus.bdcricketteam.datamodel.CareerDataModel;
 import com.example.asus.bdcricketteam.datamodel.FixtureDataModel;
-import com.example.asus.bdcricketteam.datamodel.SquadModel;
-import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
-import com.example.asus.bdcricketteam.security.SecureProcessor;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ASUS on 2/6/2016.
@@ -45,7 +26,7 @@ public class NationalTeamFixtureFragment extends Fragment {
     private ArrayList<FixtureDataModel> list;
     private FixtureAdapter adapter;
     private RecyclerView mRecyclerView;
-    private Tracker mTracker;
+    //private Tracker mTracker;
     private String fileSchedule = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwdHRvSjB2UlVTdTA";
 
     @Nullable
@@ -76,11 +57,11 @@ public class NationalTeamFixtureFragment extends Fragment {
                 return false;
             }
         });
-        ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
+        /*ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         return rootView;
     }
 /*
