@@ -2,6 +2,7 @@ package com.example.asus.bdcricketteam.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,7 +49,7 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
     private LinearLayoutManager mManager;
 
     private SliderLayout mDemoSlider;
-    private FrameLayout mFrameLayout;
+    private View rootView;
     // private static String VIDEO_ID = null;
     //private static final String API_KEY = "AIzaSyAfuxBW5SMQDLf8IDU_9Rwkn0-esinOfNw";
     //  private YouTubePlayerSupportFragment youTubePlayerFragment;
@@ -60,58 +61,48 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.news_fragment, container, false);
-
-        // [START create_database_reference]
         if (mDatabase == null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             // database.setPersistenceEnabled(true);
             mDatabase = database.getReference();
         }
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.news_fragment, container, false);
+            mRecycler = (RecyclerView) rootView.findViewById(R.id.newsRecyclerView);
+            mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
+            mDemoSlider = (SliderLayout) rootView.findViewById(R.id.slider);
+            mProgressBar.setVisibility(View.VISIBLE);
+            Query sliderQuery = getSliderQuery(mDatabase);
+            sliderQuery.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    NewsDataModel newPost = dataSnapshot.getValue(NewsDataModel.class);
+                    setSlider(newPost);
+                }
 
-        // [END create_database_reference]
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                }
 
-        mRecycler = (RecyclerView) rootView.findViewById(R.id.newsRecyclerView);
-        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
-        mDemoSlider = (SliderLayout) rootView.findViewById(R.id.slider);
-        mProgressBar.setVisibility(View.VISIBLE);
-        // mFrameLayout = (FrameLayout) rootView.findViewById(R.id.youtube_fragment);
-        //mRecycler.setHasFixedSize(true);
-        // youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
-       /* youTubePlayerFragment = (YouTubePlayerSupportFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.youtube_fragment);
-        initializeYoutube();*/
-        // youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
 
-        // initializeYoutube();
-        Query sliderQuery = getSliderQuery(mDatabase);
-        sliderQuery.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                NewsDataModel newPost = dataSnapshot.getValue(NewsDataModel.class);
-                setSlider(newPost);
-            }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
+            });
+        }
 
-            }
+        // [START create_database_reference]
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         return rootView;
     }
@@ -120,6 +111,14 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
     public void onResume() {
         super.onResume();
         //setSlider();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (rootView.getParent() != null) {
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
+        super.onDestroyView();
     }
 
     public void setSlider(NewsDataModel model) {
@@ -147,6 +146,23 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
         mDemoSlider.addOnPageChangeListener(this);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

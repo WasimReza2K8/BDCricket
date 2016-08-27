@@ -15,6 +15,7 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.provider.Telephony;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         new GetVersionUpdate(this, updatePopupCallBack).execute();
         //item.setVisible(false);
         //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-        fragTransaction.replace(content.getId(), base).addToBackStack("tag2");
+        fragTransaction.add(content.getId(), base, "uniqueTag").addToBackStack("uniqueTag");
         fragTransaction.commit();
         setSupportActionBar(toolbar);
 
@@ -130,17 +132,29 @@ public class MainActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                NewsFragmentFirebase main = (NewsFragmentFirebase) fragmentManager.findFragmentByTag("tag2");
+
+                                FragmentTransaction fTransaction = fragmentManager.beginTransaction();
+                                Fragment fragment = fragmentManager.findFragmentByTag("uniqueTag");
+                                Log.e("frag", fragment+"");
+// If fragment doesn't exist yet, create one
+                                if (fragment == null) {
+                                    fTransaction.add(content.getId(), new NewsFragmentFirebase(), "uniqueTag").commit();
+                                }
+                                else { // re-use the old fragment
+                                    fTransaction.replace(content.getId(), fragment, "uniqueTag").commit();
+                                }
+                               /* NewsFragmentFirebase main = (NewsFragmentFirebase) fragmentManager.findFragmentByTag("tag2");
+                                Log.e("frag", main+"");
                                 if (main == null) {
                                     main = new NewsFragmentFirebase();
                                 }
-                                fragTransaction = fragmentManager.beginTransaction();
+                                fragTransaction = fragmentManager.beginTransaction();*/
                                 //NewsFragment main = new NewsFragment();
                                 toolbar.setTitle(getResources().getString(R.string.app_name));
                                 //item.setVisible(false);
                                 //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                                fragTransaction.replace(content.getId(), main).addToBackStack("tag2");
-                                fragTransaction.commit();
+                               /* fragTransaction.replace(content.getId(), main, "tag2").addToBackStack("tag2");
+                                fragTransaction.commit();*/
                             }
                         }, timeDelay);
                         //Toast.makeText(getApplicationContext(), "Inbox Selected", Toast.LENGTH_SHORT).show();
