@@ -43,7 +43,7 @@ public class HighlightsRecyclerAdapter extends RecyclerView.Adapter<HighlightsRe
         holder.mTextViewDuration.setText(SecureProcessor.onDecrypt(news.get(position).getDuration()));
         holder.mTextViewDuration.setVisibility(View.GONE);
         holder.mProgressBar.setVisibility(View.VISIBLE);
-        String link = news.get(position).getImageLink();
+        String link = news.get(position).getLink();
         String fullLink = "http://img.youtube.com/vi/" + link + "/0.jpg";
         Picasso.with(mContext)
                 .load(fullLink)

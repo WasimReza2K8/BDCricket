@@ -104,7 +104,7 @@ public class GetHighlightsData extends AsyncTask<Void, Void, String> {
             detail = news.getString("duration");
             model.setDuration(SecureProcessor.onEncrypt(detail.trim()));
             imageLink = news.getString("link");
-            model.setImageLink(imageLink);
+            model.setLink(imageLink);
             Database.insertHighlightsValues(model);
         } catch (JSONException e) {
             e.printStackTrace();

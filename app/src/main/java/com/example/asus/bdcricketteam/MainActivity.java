@@ -36,10 +36,12 @@ import com.example.asus.bdcricketteam.ads.GoogleAds;
 import com.example.asus.bdcricketteam.async.GetVersionUpdate;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
 import com.example.asus.bdcricketteam.fragment.HighlightsFragment;
+import com.example.asus.bdcricketteam.fragment.HighlightsFragmentFirebase;
 import com.example.asus.bdcricketteam.fragment.LiveScoreList;
 import com.example.asus.bdcricketteam.fragment.NationalTeamFragment;
 import com.example.asus.bdcricketteam.fragment.NewsFragment;
 import com.example.asus.bdcricketteam.fragment.NewsFragmentFirebase;
+import com.example.asus.bdcricketteam.fragment.UpComingTournamentFireBase;
 import com.example.asus.bdcricketteam.fragment.UpcomingTournament;
 import com.example.asus.bdcricketteam.interfaceui.UpdatePopupCallBack;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
@@ -135,12 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
                                 FragmentTransaction fTransaction = fragmentManager.beginTransaction();
                                 Fragment fragment = fragmentManager.findFragmentByTag("uniqueTag");
-                                Log.e("frag", fragment+"");
+                                Log.e("frag", fragment + "");
 // If fragment doesn't exist yet, create one
                                 if (fragment == null) {
                                     fTransaction.add(content.getId(), new NewsFragmentFirebase(), "uniqueTag").commit();
-                                }
-                                else { // re-use the old fragment
+                                } else { // re-use the old fragment
                                     fTransaction.replace(content.getId(), fragment, "uniqueTag").commit();
                                 }
                                /* NewsFragmentFirebase main = (NewsFragmentFirebase) fragmentManager.findFragmentByTag("tag2");
@@ -185,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 fragTransaction = fragmentManager.beginTransaction();
                                 // Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
-                                UpcomingTournament otherEventFragment = new UpcomingTournament();
+                                UpComingTournamentFireBase otherEventFragment = new UpComingTournamentFireBase();
                                 //item.setVisible(false);
                                 // fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                                 fragTransaction.replace(content.getId(), otherEventFragment).addToBackStack("tag3");
@@ -224,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 fragTransaction = fragmentManager.beginTransaction();
                                 //Toast.makeText(getApplicationContext(), "Send Selected", Toast.LENGTH_SHORT).show();
-                                HighlightsFragment settings = new HighlightsFragment();
+                                HighlightsFragmentFirebase settings = new HighlightsFragmentFirebase();
                                 //item.setVisible(false);
                                 //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                                 fragTransaction.replace(content.getId(), settings).addToBackStack("tag2");
@@ -576,7 +577,6 @@ public class MainActivity extends AppCompatActivity {
         if (mAdView != null) {
             mAdView.destroy();
         }
-
         super.onDestroy();
     }
 
@@ -595,7 +595,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
 
                         finish();
-                        GoogleAds.getGoogleAds(MainActivity.this).showInterstitial();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                GoogleAds.getGoogleAds(MainActivity.this).showInterstitial();
+                            }
+                        }, 5000);
                         //super.onBackPressed();
                         // if this button is clicked, close
                         // current activity

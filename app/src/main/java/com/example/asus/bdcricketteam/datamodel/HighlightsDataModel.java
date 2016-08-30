@@ -29,16 +29,16 @@ public class HighlightsDataModel {
         this.duration = fullNews;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public String getLink() {
+        return link;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     private int id;
     private String title;
     private String duration;
-    private String imageLink;
+    private String link;
 }

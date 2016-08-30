@@ -31,6 +31,7 @@ public class LiveScoreActivity extends AppCompatActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_live_score);
         String link = getIntent().getStringExtra("link");
+        String title = getIntent().getStringExtra("title");
         mAdView = (AdView) findViewById(R.id.ad_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

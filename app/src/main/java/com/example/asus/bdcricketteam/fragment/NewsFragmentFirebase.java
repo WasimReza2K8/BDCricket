@@ -32,6 +32,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ASUS on 8/15/2016.
@@ -50,6 +51,7 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
 
     private SliderLayout mDemoSlider;
     private View rootView;
+    private List<NewsDataModel> sliderList = new ArrayList<>();
     // private static String VIDEO_ID = null;
     //private static final String API_KEY = "AIzaSyAfuxBW5SMQDLf8IDU_9Rwkn0-esinOfNw";
     //  private YouTubePlayerSupportFragment youTubePlayerFragment;
@@ -77,7 +79,12 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     NewsDataModel newPost = dataSnapshot.getValue(NewsDataModel.class);
-                    setSlider(newPost);
+                    sliderList.add(newPost);
+                    if (sliderList != null && sliderList.size() == 5) {
+                        for (int i = 4; i >= 0; i--) {
+                            setSlider(sliderList.get(i));
+                        }
+                    }
                 }
 
                 @Override
@@ -101,7 +108,6 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
         }
 
         // [START create_database_reference]
-
 
 
         return rootView;
@@ -170,8 +176,8 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
 
         // Set up Layout Manager, reverse layout
         mManager = new LinearLayoutManager(getActivity());
-       /* mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);*/
+        mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
         // Set up FirebaseRecyclerAdapter with the Query
@@ -241,7 +247,7 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
     }
 
     public Query getSliderQuery(DatabaseReference databaseReference) {
-        Query recentPostsQuery = databaseReference.child("news").limitToFirst(5);
+        Query recentPostsQuery = databaseReference.child("news").limitToLast(5);
         return recentPostsQuery;
     }
 

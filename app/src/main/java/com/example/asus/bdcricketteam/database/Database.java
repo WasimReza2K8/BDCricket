@@ -275,7 +275,7 @@ public class Database extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(NEWS_TITLE, model.getTitle());
         cv.put(DURATION, model.getDuration());
-        cv.put(NEWS_IMAGE_LINK, model.getImageLink());
+        cv.put(NEWS_IMAGE_LINK, model.getLink());
 
         return getDatabase().insert(HIGHLIGHTS_TABLE, null, cv);
     }
@@ -545,7 +545,7 @@ public class Database extends SQLiteOpenHelper {
                 model.setId(c.getInt(0));
                 model.setTitle(c.getString(1));
                 model.setDuration(c.getString(2));
-                model.setImageLink(c.getString(3));
+                model.setLink(c.getString(3));
 
                 list.add(model);
 

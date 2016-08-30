@@ -90,7 +90,7 @@ public class NationalTeamFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new NationalTeamFixtureFragment(), getResources().getString(R.string.fixture));
+        adapter.addFragment(new NationalTeamUpComing(), getResources().getString(R.string.fixture));
         adapter.addFragment(new NationalTeamSquard(), getResources().getString(R.string.squad));
         // adapter.addFragment(new UpcomingFixture(), OnPreferenceManager.getInstance(this).getUpcomingTitle());
         viewPager.setAdapter(adapter);

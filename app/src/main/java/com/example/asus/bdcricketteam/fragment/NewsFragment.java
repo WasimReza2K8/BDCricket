@@ -54,6 +54,7 @@ public class NewsFragment extends Fragment implements BaseSliderView.OnSliderCli
         mTextView = (TextView) rootView.findViewById(R.id.textViewLoading);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
         mDemoSlider = (SliderLayout) rootView.findViewById(R.id.slider);
+        mDemoSlider.setVisibility(View.GONE);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         //new GetNews().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

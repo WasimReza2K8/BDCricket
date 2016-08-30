@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,7 @@ public class HighlightsFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 if (ConnectionDetector.getInstance(getActivity()).isConnectingToInternet()) {
                     Intent i = new Intent(getActivity(), HighlightsVideoActivity.class);
-                    i.putExtra("link", list.get(position).getImageLink());
+                    i.putExtra("link", list.get(position).getLink());
                     startActivity(i);
                 } else {
                     noInternetConnectionAlertDialog();

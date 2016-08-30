@@ -18,5 +18,16 @@
         android:paddingTop="2dp"
         android:visibility="visible" />
 
+    <ProgressBar
+        android:id="@+id/progressBarLoading"
+        style="@android:style/Widget.ProgressBar.Large.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
+        android:gravity="center"
+        android:visibility="gone" />
+
 
 </RelativeLayout>

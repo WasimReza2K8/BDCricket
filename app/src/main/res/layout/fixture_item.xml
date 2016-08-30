@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/cardPaddingStyle"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/cardPaddingStyle">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -49,50 +49,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/first_linear"
+                android:paddingBottom="5dp"
                 android:text="matchNumber"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:paddingBottom="5dp"/>
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/flagTeam1"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/between" />
+
+            <ImageView
+                android:id="@+id/flagTeam2"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/between" />
 
 
             <RelativeLayout
                 android:id="@+id/last_linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/between"
-                android:paddingBottom="10dp">
+                android:layout_below="@+id/flagTeam1"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
                 <TextView
                     android:id="@+id/venue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:textSize="12sp"
-                    android:text="matchNumber" />
+                    android:text="matchNumber"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:textSize="12sp"
-                    android:text="matchNumber" />
+                    android:text="matchNumber"
+                    android:textSize="12sp" />
 
 
             </RelativeLayout>
 
-               <TextView
-                   android:id="@+id/result"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:layout_below="@+id/last_linear"
-                   android:layout_marginTop="5dp"
-                   android:gravity="center_horizontal"
-                   android:textSize="16sp"
-                   android:visibility="gone"
-                   android:textColor="@android:color/black"
-                   android:text="result: Bangladesh wins"
-                    />
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/last_linear"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:text="result: Bangladesh wins"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:visibility="gone" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

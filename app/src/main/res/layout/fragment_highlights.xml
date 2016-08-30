@@ -30,7 +30,7 @@
         android:layout_gravity="center"
         android:layout_marginRight="5dp"
         android:gravity="center"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textViewLoading"

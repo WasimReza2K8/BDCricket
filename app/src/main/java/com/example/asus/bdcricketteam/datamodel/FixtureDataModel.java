@@ -11,6 +11,28 @@ public class FixtureDataModel {
     private String between;
     private String venue;
     private String time;
+    private String flag1;
+    private String flag2;
+    private String result;
+    private String tournament;
+    private int id;
+
+    public String getFlag1() {
+        return flag1;
+    }
+
+    public void setFlag1(String flag1) {
+        this.flag1 = flag1;
+    }
+
+    public String getFlag2() {
+        return flag2;
+    }
+
+    public void setFlag2(String flag2) {
+        this.flag2 = flag2;
+    }
+
 
     public String getTournament() {
         return tournament;
@@ -20,7 +42,6 @@ public class FixtureDataModel {
         this.tournament = tournament;
     }
 
-    private String tournament;
 
     public String getResult() {
         return result;
@@ -30,7 +51,6 @@ public class FixtureDataModel {
         this.result = result;
     }
 
-    private String result;
 
     public int getId() {
         return id;
@@ -39,8 +59,6 @@ public class FixtureDataModel {
     public void setId(int id) {
         this.id = id;
     }
-
-    private int id;
 
 
     public String getMatchNumber() {
