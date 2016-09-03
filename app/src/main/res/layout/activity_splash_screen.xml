@@ -24,7 +24,7 @@
         android:textStyle="bold"
         android:layout_centerHorizontal="true"/>
 
-    <ProgressBar
+    <!--<ProgressBar
         android:id="@+id/progressBarLoading"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
@@ -37,7 +37,8 @@
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
         android:progress="0"
-        android:progressDrawable="@drawable/green_progress" />
+        android:progressDrawable="@drawable/green_progress"
+        android:indeterminate="false" />-->
 
 
 </RelativeLayout>

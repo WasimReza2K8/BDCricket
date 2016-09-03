@@ -33,7 +33,7 @@ import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
  * Created by ASUS on 2/15/2016.
  */
 public class SplashScreen extends AppCompatActivity {
-    private ProgressBar mProgressBar;
+    //private ProgressBar mProgressBar;
     public UIRefreshCallBack uiRefreshCallBack;
     // private String newsFileURL = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwdHRvSjB2UlVTdTA";
     public static String newsFileURL2 = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwTS1ZNGVENzdzTDA";
@@ -63,14 +63,14 @@ public class SplashScreen extends AppCompatActivity {
                 R.anim.fade_in);
         animFadeIn.setFillAfter(true);
         appName.startAnimation(animFadeIn);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBarLoading);
+        //mProgressBar = (ProgressBar) findViewById(R.id.progressBarLoading);
         loadingData = false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        uiRefreshCallBack = new UIRefreshCallBack() {
+       /* uiRefreshCallBack = new UIRefreshCallBack() {
             @Override
             public void onProgress(int progress) {
                 mProgressBar.setProgress(progress);
@@ -79,7 +79,7 @@ public class SplashScreen extends AppCompatActivity {
                     startActivity(new Intent(SplashScreen.this, MainActivity.class));
                 }
             }
-        };
+        };*/
         try {
             getUpdate();
         } catch (PackageManager.NameNotFoundException e) {
@@ -90,7 +90,7 @@ public class SplashScreen extends AppCompatActivity {
     public void getUpdate() throws PackageManager.NameNotFoundException {
 
         if (ConnectionDetector.getInstance(this).isConnectingToInternet()) {
-            int hour = 0;
+            //   int hour = 0;
             PackageInfo packageInfo = getPackageManager()
                     .getPackageInfo(getPackageName(), 0);
             int versionCode = packageInfo.versionCode;
@@ -99,11 +99,12 @@ public class SplashScreen extends AppCompatActivity {
                 OnPreferenceManager.getInstance(this).setAppVersionCode(versionCode);
             }
 
-            if (OnPreferenceManager.getInstance(this).getIsFirstTime()) {
+           /* if (OnPreferenceManager.getInstance(this).getIsFirstTime()) {
                 OnPreferenceManager.getInstance(this).setIsFirstTime(false);
                 OnPreferenceManager.getInstance(this).setDate(System.currentTimeMillis());
                 //new GetNews().execute();
-                loadData();
+                //loadData();
+
                 return;
             } else {
                 Long timeDifference = System.currentTimeMillis() - OnPreferenceManager.getInstance(this).getDate();
@@ -136,7 +137,11 @@ public class SplashScreen extends AppCompatActivity {
                 if (OnPreferenceManager.getInstance(this).getIsFirstTime()) {
                     OnPreferenceManager.getInstance(this).setIsFirstTime(false);
                 }
+            }*/
+            if (OnPreferenceManager.getInstance(this).getIsFirstTime()) {
+                OnPreferenceManager.getInstance(this).setIsFirstTime(false);
             }
+            startMainActivity();
 
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -156,11 +161,13 @@ public class SplashScreen extends AppCompatActivity {
                     .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             if (OnPreferenceManager.getInstance(SplashScreen.this).getIsFirstTime()) {
+                                finish();
                                 return;
 
                             } else {
                                 //new GetNews().execute();
-                                loadData();
+                                //loadData();
+                                startMainActivity();
                                 dialog.cancel();
                                 return;
                             }
@@ -173,6 +180,22 @@ public class SplashScreen extends AppCompatActivity {
             // show it
             alertDialog.show();
         }
+    }
+
+    private void startMainActivity() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // This method will be executed once the timer is over
+                // Start your app main activity
+                // mProgressBar.setProgress(100);
+                Intent i = new Intent(SplashScreen.this, MainActivity.class);
+                startActivity(i);
+
+                // close this activity
+                finish();
+            }
+        }, SPLASH_TIME_OUT);
     }
 
     private void loadData() {

@@ -24,33 +24,44 @@ public class NationalTeamFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-   // private Tracker mTracker;
+    private View rootView;
+    // private Tracker mTracker;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.national_team_fragment, container, false);
-        viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        rootView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    getActivity().finish();
-                    return true;
-                }
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.national_team_fragment, container, false);
+            viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
+            setupViewPager(viewPager);
+            tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(viewPager);
+            rootView.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        getActivity().finish();
+                        return true;
+                    }
 
-                return false;
-            }
-        });
+                    return false;
+                }
+            });
+        }
        /* ApplicationAnalytics application = (ApplicationAnalytics) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         Log.i("screen", "Setting screen name: " + this.toString());
         mTracker.setScreenName("Image~" + this.toString());
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (rootView.getParent() != null) {
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
+        super.onDestroyView();
     }
 
 
@@ -91,7 +102,7 @@ public class NationalTeamFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new NationalTeamUpComing(), getResources().getString(R.string.fixture));
-        adapter.addFragment(new NationalTeamSquard(), getResources().getString(R.string.squad));
+        adapter.addFragment(new SquadFirebaseFragment(), getResources().getString(R.string.squad));
         // adapter.addFragment(new UpcomingFixture(), OnPreferenceManager.getInstance(this).getUpcomingTitle());
         viewPager.setAdapter(adapter);
     }

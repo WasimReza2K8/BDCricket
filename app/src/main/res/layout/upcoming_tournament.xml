@@ -27,7 +27,7 @@
         android:layout_gravity="center"
         android:layout_marginRight="5dp"
         android:gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

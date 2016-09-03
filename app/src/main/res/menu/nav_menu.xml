@@ -14,7 +14,7 @@
         <item
             android:id="@+id/bdTeam"
             android:checked="false"
-            android:icon="@drawable/menu2"
+            android:icon="@drawable/national_icon"
             android:title="@string/national_team" />
 
         <item

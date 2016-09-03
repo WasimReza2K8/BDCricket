@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     app:tabMode="fixed"
     app:tabIndicatorHeight="3dp"
+    app:tabIndicatorColor="#f70636"
     app:tabGravity="fill"/>

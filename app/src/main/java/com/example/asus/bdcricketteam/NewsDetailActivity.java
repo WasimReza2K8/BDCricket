@@ -74,6 +74,9 @@ public class NewsDetailActivity extends AppCompatActivity {
                 case '\n':
                     sb.append("\n");
                     break;
+                case 'n':
+                    sb.append("\n");
+                    break;
                 default:
                     sb.append(c);
             }

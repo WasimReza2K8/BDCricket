@@ -12,12 +12,12 @@ public class SquadModel {
         this.playerNumber = playerNumber;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getName() {
+        return name;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setName(String playerName) {
+        this.name = playerName;
     }
 
     public String getRole() {
@@ -37,9 +37,19 @@ public class SquadModel {
     }
 
     private String playerNumber;
-    private String playerName;
+    private String name;
     private String  role;// 1 means batsman, 2 means bolwer, 3 means allrounder, 4 means wicketkepper Batsman
     private String imageLink;
+    private String profilelink;
+    public String getProfilelink() {
+        return profilelink;
+    }
+
+    public void setProfilelink(String profilelink) {
+        this.profilelink = profilelink;
+    }
+
+
 
     public String getAge() {
         return age;

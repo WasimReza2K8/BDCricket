@@ -36,7 +36,7 @@ public class PlayerDetailActivity extends AppCompatActivity {
         battingHeading = (TextView) findViewById(R.id.battingHeading);
         testTextView = (TextView) findViewById(R.id.testBattingDetail);
         TextView name = (TextView) findViewById(R.id.name);
-        name.setText(SecureProcessor.onDecrypt(squadModel.getPlayerName()));
+        name.setText(SecureProcessor.onDecrypt(squadModel.getName()));
         ImageView imageView = (ImageView) findViewById(R.id.image);
         Picasso.with(this)
                 .load(squadModel.getImageLink())

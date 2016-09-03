@@ -242,7 +242,7 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
      }
  */
     public Query getQuery(DatabaseReference databaseReference) {
-        Query recentPostsQuery = databaseReference.child("news");
+        Query recentPostsQuery = databaseReference.child("news").limitToLast(30);
         return recentPostsQuery;
     }
 

@@ -98,7 +98,7 @@ public class GetSquad extends AsyncTask<Void, Void, String> {
             //model.setId(id);
             model.setPlayerNumber(String.valueOf(id));
             name = news.getString("name");
-            model.setPlayerName(SecureProcessor.onEncrypt(name.trim()));
+            model.setName(SecureProcessor.onEncrypt(name.trim()));
             age = news.getString("age");
             model.setAge(SecureProcessor.onEncrypt(age.trim()));
             role = news.getString("role");

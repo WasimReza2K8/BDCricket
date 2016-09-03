@@ -1,5 +1,6 @@
 package com.example.asus.bdcricketteam.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,24 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.asus.bdcricketteam.LiveScoreActivity;
 import com.example.asus.bdcricketteam.R;
 import com.example.asus.bdcricketteam.datamodel.FixtureDataModel;
-import com.example.asus.bdcricketteam.datamodel.NewsDataModel;
+import com.example.asus.bdcricketteam.datamodel.SquadModel;
 import com.example.asus.bdcricketteam.viewholder.FixtureViewHolder;
-import com.example.asus.bdcricketteam.viewholder.NewsViewHolder;
+import com.example.asus.bdcricketteam.viewholder.SquadViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 /**
- * Created by ASUS on 8/28/2016.
+ * Created by ASUS on 8/30/2016.
  */
-public abstract class FixtureBaseFragment extends Fragment {
+public class SquadFirebaseFragment extends Fragment {
     private DatabaseReference mDatabase;
     // [END define_database_reference]
 
-    private FirebaseRecyclerAdapter<FixtureDataModel, FixtureViewHolder> mAdapter;
+    private FirebaseRecyclerAdapter<SquadModel, SquadViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private ProgressBar mProgressBar;
     private LinearLayoutManager mManager;
@@ -45,10 +47,9 @@ public abstract class FixtureBaseFragment extends Fragment {
             mDatabase = database.getReference();
         }
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.upcoming_tournament, container, false);
-            mRecycler = (RecyclerView) rootView.findViewById(R.id.fixture_recycler_view);
-            mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
-            mProgressBar.setVisibility(View.VISIBLE);
+            rootView = inflater.inflate(R.layout.national_team_squard, container, false);
+            mRecycler = (RecyclerView) rootView.findViewById(R.id.squadRecyclerView);
+           // mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
         }
         return rootView;
     }
@@ -66,12 +67,22 @@ public abstract class FixtureBaseFragment extends Fragment {
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
         Log.e("Query", postsQuery.toString() + " null");
-        mAdapter = new FirebaseRecyclerAdapter<FixtureDataModel, FixtureViewHolder>(FixtureDataModel.class, R.layout.fixture_item,
-                FixtureViewHolder.class, postsQuery) {
+        mAdapter = new FirebaseRecyclerAdapter<SquadModel, SquadViewHolder>(SquadModel.class, R.layout.squad_item,
+                SquadViewHolder.class, postsQuery) {
             @Override
-            protected void populateViewHolder(final FixtureViewHolder viewHolder, final FixtureDataModel model, final int position) {
+            protected void populateViewHolder(final SquadViewHolder viewHolder, final SquadModel model, final int position) {
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
-                mProgressBar.setVisibility(View.GONE);
+               // mProgressBar.setVisibility(View.GONE);
+                viewHolder.itemCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getActivity(), LiveScoreActivity.class);
+                        i.putExtra("link", model.getProfilelink());
+                        i.putExtra("title", "player_details");
+                        startActivity(i);
+                        getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    }
+                });
                 viewHolder.bindToPost(model, getActivity());
             }
         };
@@ -86,7 +97,8 @@ public abstract class FixtureBaseFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public abstract Query getQuery(DatabaseReference databaseReference);
-
-
+    public Query getQuery(DatabaseReference databaseReference) {
+        Query recentPostsQuery = databaseReference.child("sqard");
+        return recentPostsQuery;
+    }
 }

@@ -63,6 +63,7 @@ public class LiveScoreList extends Fragment {
             public void onItemClick(View view, int position) {
                 Intent i = new Intent(getActivity(), LiveScoreActivity.class);
                 i.putExtra("link", list.get(position).getLink());
+                i.putExtra("title", "live_score");
                 startActivity(i);
                 getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }

@@ -44,7 +44,7 @@ public class SquadRecyclerAdapter extends RecyclerView.Adapter<SquadRecyclerAdap
                 + (SecureProcessor.onDecrypt(news.get(position).getRole())));
         holder.mTextViewPlayerStyle.setText(mContext.getResources().getString(R.string.style) + ": "
                 + (SecureProcessor.onDecrypt(news.get(position).getStyle())));
-        holder.mTextViewPlayerName.setText(SecureProcessor.onDecrypt(news.get(position).getPlayerName()));
+        holder.mTextViewPlayerName.setText(SecureProcessor.onDecrypt(news.get(position).getName()));
         Picasso.with(mContext)
                 .load(news.get(position).getImageLink())
                 .into(holder.mImageViewPlayerImage);

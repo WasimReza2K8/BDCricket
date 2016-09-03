@@ -35,7 +35,11 @@ public class LiveScoreActivity extends AppCompatActivity {
         mAdView = (AdView) findViewById(R.id.ad_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.live_score));
+        if(title != null && title.equalsIgnoreCase("live_score")){
+            getSupportActionBar().setTitle(getResources().getString(R.string.live_score));
+        }else{
+            getSupportActionBar().setTitle(getResources().getString(R.string.player_detail));
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBarLoading);
         com.google.android.gms.ads.AdRequest adrequest = (new com.google.android.gms.ads.AdRequest.Builder()).addTestDevice("18D9D4FB40DF048C506091E42E0FDAFD").build();

@@ -35,19 +35,23 @@ import android.widget.Toast;
 import com.example.asus.bdcricketteam.ads.GoogleAds;
 import com.example.asus.bdcricketteam.async.GetVersionUpdate;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
-import com.example.asus.bdcricketteam.fragment.HighlightsFragment;
+import com.example.asus.bdcricketteam.datamodel.TournamentModel;
 import com.example.asus.bdcricketteam.fragment.HighlightsFragmentFirebase;
 import com.example.asus.bdcricketteam.fragment.LiveScoreList;
 import com.example.asus.bdcricketteam.fragment.NationalTeamFragment;
-import com.example.asus.bdcricketteam.fragment.NewsFragment;
 import com.example.asus.bdcricketteam.fragment.NewsFragmentFirebase;
 import com.example.asus.bdcricketteam.fragment.UpComingTournamentFireBase;
-import com.example.asus.bdcricketteam.fragment.UpcomingTournament;
 import com.example.asus.bdcricketteam.interfaceui.UpdatePopupCallBack;
 import com.example.asus.bdcricketteam.prefmanager.OnPreferenceManager;
 import com.example.asus.bdcricketteam.security.SecureProcessor;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     // private Tracker mTracker;
     public String fixtureFileURl = "https://drive.google.com/uc?export=download&id=0B85b1FRNOEQwdHRvSjB2UlVTdTA";
     public static final String EMPTY_STRING = "";
+    private DatabaseReference mDatabase;
+    private TournamentModel tournamentModel;
     //https://drive.google.com/file/d/0B85b1FRNOEQwdHRvSjB2UlVTdTA/view?usp=sharing
     //https://drive.google.com/open?id=0B85b1FRNOEQwdHRvSjB2UlVTdTA
     //https://drive.google.com/file/d/0B85b1FRNOEQwTS1ZNGVENzdzTDA/view?usp=sharing
@@ -80,6 +86,37 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
+        if (mDatabase == null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            // database.setPersistenceEnabled(true);
+            mDatabase = database.getReference();
+        }
+
+        Query sliderQuery = getTournamentName(mDatabase);
+        sliderQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                tournamentModel = dataSnapshot.getValue(TournamentModel.class);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         /*ApplicationAnalytics application = (ApplicationAnalytics) getApplication();
         mTracker = application.getDefaultTracker();*/
         fragTransaction = getSupportFragmentManager().beginTransaction();
@@ -138,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                                 FragmentTransaction fTransaction = fragmentManager.beginTransaction();
                                 Fragment fragment = fragmentManager.findFragmentByTag("uniqueTag");
                                 Log.e("frag", fragment + "");
-// If fragment doesn't exist yet, create one
+                                // If fragment doesn't exist yet, create one
                                 if (fragment == null) {
                                     fTransaction.add(content.getId(), new NewsFragmentFirebase(), "uniqueTag").commit();
                                 } else { // re-use the old fragment
@@ -169,11 +206,20 @@ public class MainActivity extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                fragTransaction = fragmentManager.beginTransaction();
+                                /*fragTransaction = fragmentManager.beginTransaction();
                                 // Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
                                 NationalTeamFragment nationalTeamFragment = new NationalTeamFragment();
                                 fragTransaction.replace(content.getId(), nationalTeamFragment).addToBackStack("tag2");
-                                fragTransaction.commit();
+                                fragTransaction.commit();*/
+                                FragmentTransaction fTransaction = fragmentManager.beginTransaction();
+                                Fragment fragment = fragmentManager.findFragmentByTag("tag2");
+                                Log.e("frag2", fragment + "");
+                                // If fragment doesn't exist yet, create one
+                                if (fragment == null) {
+                                    fTransaction.add(content.getId(), new NationalTeamFragment(), "tag2").commit();
+                                } else { // re-use the old fragment
+                                    fTransaction.replace(content.getId(), fragment, "tag2").commit();
+                                }
                                 toolbar.setTitle(getResources().getString(R.string.national_team));
                             }
                         }, timeDelay);
@@ -185,16 +231,18 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 fragTransaction = fragmentManager.beginTransaction();
-                                // Toast.makeText(getApplicationContext(), "Stared Selected", Toast.LENGTH_SHORT).show();
-                                UpComingTournamentFireBase otherEventFragment = new UpComingTournamentFireBase();
-                                //item.setVisible(false);
-                                // fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                                fragTransaction.replace(content.getId(), otherEventFragment).addToBackStack("tag3");
-                                fragTransaction.commit();
+                                Fragment fragment = fragmentManager.findFragmentByTag("tag3");
+                                if (fragment == null) {
+                                    fragTransaction.add(content.getId(), new UpComingTournamentFireBase(), "tag3").commit();
+                                } else { // re-use the old fragment
+                                    fragTransaction.replace(content.getId(), fragment, "tag3").commit();
+                                }
+                               /* fragTransaction.replace(content.getId(), new UpComingTournamentFireBase()).addToBackStack("tag3");
+                                fragTransaction.commit();*/
                                 // Log.e("tournamentname", OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() + "");
-                                if (OnPreferenceManager.getInstance(MainActivity.this).getTournamentName() != null
-                                        && !OnPreferenceManager.getInstance(MainActivity.this).getTournamentName().equalsIgnoreCase("")) {
-                                    toolbar.setTitle(SecureProcessor.onDecrypt(OnPreferenceManager.getInstance(MainActivity.this).getTournamentName()));
+                                if (tournamentModel != null && tournamentModel.getName() != null
+                                        && !tournamentModel.getName().equalsIgnoreCase(EMPTY_STRING)) {
+                                    toolbar.setTitle(tournamentModel.getName());
                                 } else {
                                     toolbar.setTitle(getResources().getString(R.string.upcoming_tournament));
                                 }
@@ -211,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                                 LiveScoreList settings = new LiveScoreList();
                                 //item.setVisible(false);
                                 //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                                fragTransaction.replace(content.getId(), settings).addToBackStack("tag2");
+                                fragTransaction.replace(content.getId(), settings).addToBackStack(null);
                                 fragTransaction.commit();
                                 toolbar.setTitle(getResources().getString(R.string.live_score));
                             }
@@ -228,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
                                 HighlightsFragmentFirebase settings = new HighlightsFragmentFirebase();
                                 //item.setVisible(false);
                                 //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
-                                fragTransaction.replace(content.getId(), settings).addToBackStack("tag2");
+                                fragTransaction.replace(content.getId(), settings).addToBackStack("tag4");
                                 fragTransaction.commit();
                                 toolbar.setTitle(getResources().getString(R.string.highlights));
                             }
@@ -293,6 +341,11 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
 
+    }
+
+    public Query getTournamentName(DatabaseReference databaseReference) {
+        Query recentPostsQuery = databaseReference.child("upcomingtournamentname");
+        return recentPostsQuery;
     }
 
 

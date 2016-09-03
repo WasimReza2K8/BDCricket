@@ -253,7 +253,7 @@ public class Database extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         //cv.put(COLUMN_MATCH_ID, model.getId());
         cv.put(PLAYER_NUMBER, model.getPlayerNumber());
-        cv.put(PLAYER_NAME, model.getPlayerName());
+        cv.put(PLAYER_NAME, model.getName());
         cv.put(PLAYER_AGE, model.getAge());
         cv.put(PLAYER_ROLE, model.getRole());
         cv.put(PLAYER_STYLE, model.getStyle());
@@ -438,7 +438,7 @@ public class Database extends SQLiteOpenHelper {
                 SquadModel model = new SquadModel();
                 model.setId(c.getInt(0));
                 model.setPlayerNumber(c.getString(1));
-                model.setPlayerName(c.getString(2));
+                model.setName(c.getString(2));
                 model.setAge(c.getString(3));
                 model.setRole(c.getString(4));
                 model.setStyle(c.getString(5));
@@ -477,7 +477,7 @@ public class Database extends SQLiteOpenHelper {
 
                 model.setId(c.getInt(0));
                 model.setPlayerNumber(c.getString(1));
-                model.setPlayerName(c.getString(2));
+                model.setName(c.getString(2));
                 model.setAge(c.getString(3));
                 model.setRole(c.getString(4));
                 model.setStyle(c.getString(5));

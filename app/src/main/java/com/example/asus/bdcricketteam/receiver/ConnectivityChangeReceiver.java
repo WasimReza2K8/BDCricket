@@ -39,7 +39,7 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
         Log.e("connectivity", "Change received");
         if (ConnectionDetector.getInstance(context).isConnectingToInternet()) {
             Log.e("connectivity", "internet available");
-            new GetNews().execute();
+            //new GetNews().execute();
         }
     }
 
