@@ -22,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,9 +36,11 @@ import android.widget.Toast;
 import com.example.asus.bdcricketteam.ads.GoogleAds;
 import com.example.asus.bdcricketteam.async.GetVersionUpdate;
 import com.example.asus.bdcricketteam.connectivity.ConnectionDetector;
+import com.example.asus.bdcricketteam.datamodel.LiveStreamingModel;
 import com.example.asus.bdcricketteam.datamodel.TournamentModel;
 import com.example.asus.bdcricketteam.fragment.HighlightsFragmentFirebase;
 import com.example.asus.bdcricketteam.fragment.LiveScoreList;
+import com.example.asus.bdcricketteam.fragment.LiveScoreListFirebase;
 import com.example.asus.bdcricketteam.fragment.NationalTeamFragment;
 import com.example.asus.bdcricketteam.fragment.NewsFragmentFirebase;
 import com.example.asus.bdcricketteam.fragment.UpComingTournamentFireBase;
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EMPTY_STRING = "";
     private DatabaseReference mDatabase;
     private TournamentModel tournamentModel;
+    private LiveStreamingModel liveStreamingModel;
     //https://drive.google.com/file/d/0B85b1FRNOEQwdHRvSjB2UlVTdTA/view?usp=sharing
     //https://drive.google.com/open?id=0B85b1FRNOEQwdHRvSjB2UlVTdTA
     //https://drive.google.com/file/d/0B85b1FRNOEQwTS1ZNGVENzdzTDA/view?usp=sharing
@@ -91,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             // database.setPersistenceEnabled(true);
             mDatabase = database.getReference();
         }
-
+        shareReminder();
         Query sliderQuery = getTournamentName(mDatabase);
         sliderQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -127,9 +131,17 @@ public class MainActivity extends AppCompatActivity {
         updatePopupCallBack = new UpdatePopupCallBack() {
             @Override
             public void onUpdate(boolean update) {
-                if (update) {
-                    updateRequest();
+                if (!MainActivity.this.isFinishing()) {
+                    if (update) {
+                        int count = OnPreferenceManager.getInstance(MainActivity.this).getUpdatePopupCount();
+                        OnPreferenceManager.getInstance(MainActivity.this).setUpdatePopupCount(count + 1);
+                        if (count == 0)
+                            updateRequest();
+                        else if (count % 5 == 0)
+                            updateRequest();
+                    }
                 }
+
             }
         };
 
@@ -256,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 fragTransaction = fragmentManager.beginTransaction();
                                 //Toast.makeText(getApplicationContext(), "Send Selected", Toast.LENGTH_SHORT).show();
-                                LiveScoreList settings = new LiveScoreList();
+                                LiveScoreListFirebase settings = new LiveScoreListFirebase();
                                 //item.setVisible(false);
                                 //fragTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right);
                                 fragTransaction.replace(content.getId(), settings).addToBackStack(null);
@@ -311,6 +323,11 @@ public class MainActivity extends AppCompatActivity {
                         getOpenFacebookIntent();
                         menuItem.setChecked(false);
                         return true;
+
+                   /* case R.id.sign_up:
+                        startActivity(new Intent(MainActivity.this, SignUpActivity.class));
+                        menuItem.setChecked(false);
+                        return true;*/
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                         return true;
@@ -343,8 +360,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void shareReminder() {
+        int count = OnPreferenceManager.getInstance(this).getShareReminderCount();
+        OnPreferenceManager.getInstance(this).setShareReminderCount(count + 1);
+        int eq = Math.round(count / 5);
+        Log.e("count", count + "   " + eq);
+        if (eq == 0) {
+            return;
+        } else if (count == 5) {
+            showInvitePopup();
+        } else if (count == 25) {
+            showInvitePopup();
+        } else if (eq % 10 == 0) {
+            showInvitePopup();
+        }
+    }
+
     public Query getTournamentName(DatabaseReference databaseReference) {
         Query recentPostsQuery = databaseReference.child("upcomingtournamentname");
+        return recentPostsQuery;
+    }
+
+    public Query getLiveStreamingLink(DatabaseReference databaseReference) {
+        Query recentPostsQuery = databaseReference.child("livestreaming");
         return recentPostsQuery;
     }
 
@@ -367,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showInvitePopup() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
 
         // set title
         alertDialogBuilder.setTitle(getResources().getString(R.string.invite));
@@ -528,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void noInternetConnectionAlertDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
 
         // set title
         alertDialogBuilder.setTitle(getResources().getString(R.string.popup_title));
@@ -570,7 +608,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateRequest() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
 
         // set title
         alertDialogBuilder.setTitle(getResources().getString(R.string.update_title));
@@ -611,6 +649,40 @@ public class MainActivity extends AppCompatActivity {
         if (mAdView != null) {
             mAdView.resume();
         }
+
+        if (mDatabase == null) return;
+        Query liveStreamLink = getLiveStreamingLink(mDatabase);
+        liveStreamLink.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                liveStreamingModel = dataSnapshot.getValue(LiveStreamingModel.class);
+                if (OnPreferenceManager.getInstance(MainActivity.this).getLiveStreamLink().equalsIgnoreCase(liveStreamingModel.getLink())) {
+                    return;
+                } else {
+                    OnPreferenceManager.getInstance(MainActivity.this).setLiveStreamLink(liveStreamingModel.getLink());
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         // requestNewInterstitial();
     }
 
@@ -635,7 +707,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
 
         // set title
         alertDialogBuilder.setTitle(getResources().getString(R.string.go_back_title));

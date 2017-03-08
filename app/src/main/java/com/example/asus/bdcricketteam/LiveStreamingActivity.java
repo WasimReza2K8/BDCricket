@@ -21,7 +21,6 @@ public class LiveStreamingActivity extends YouTubeBaseActivity
     //private YouTubePlayerView mPlayerView;
     private YouTubePlayerFragment youTubePlayerFragment;
     private AdView mAdView;
-    private Toolbar mToolbar;
     //private Tracker mTracker;
 
     @Override
@@ -31,7 +30,6 @@ public class LiveStreamingActivity extends YouTubeBaseActivity
         youTubePlayerFragment = (YouTubePlayerFragment) getFragmentManager()
                 .findFragmentById(R.id.youtube_fragment);
         mAdView = (AdView) findViewById(R.id.ad_view);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         AdRequest adRequest = new AdRequest.Builder().build();
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);

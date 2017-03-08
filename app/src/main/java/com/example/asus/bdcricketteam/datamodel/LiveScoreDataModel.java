@@ -6,12 +6,12 @@ package com.example.asus.bdcricketteam.datamodel;
 public class LiveScoreDataModel {
     private String link;
 
-    public String getMatchTitle() {
-        return matchTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setMatchTitle(String matchTitle) {
-        this.matchTitle = matchTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getLink() {
@@ -22,6 +22,6 @@ public class LiveScoreDataModel {
         this.link = link;
     }
 
-    private String matchTitle;
+    private String title;
 }
 

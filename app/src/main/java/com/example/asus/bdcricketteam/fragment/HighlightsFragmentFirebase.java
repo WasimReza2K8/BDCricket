@@ -65,6 +65,7 @@ public class HighlightsFragmentFirebase extends Fragment {
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
+        mProgressBar.setVisibility(View.VISIBLE);
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);

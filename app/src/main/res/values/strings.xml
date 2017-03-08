@@ -3,8 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="news">Top News</string>
     <string name="national_team">National Team</string>
-    <string name="national_women_team">জাতীয় মহিলা দল</string>
-    <string name="u_19_team">অনূর্ধ্ব-১৯ দল</string>
     <string name="upcoming_tournament">Upcoming Tournament</string>
     <string name="loading">Loading...</string>
     <string name="popup_message">Please connect to internet of updated news and scores</string>
@@ -44,4 +42,22 @@
     <string name="update_now">Update Now</string>
     <string name="later">Later</string>
     <string name="player_detail">Player Details</string>
+
+    <string name="hint_user_id">User ID</string>
+    <string name="get_custom_token">Get Token</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Sign Up</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="custom_token">Custom Token</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="token_null">Token: null</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_user_name">User Name</string>
+    <string name="hint_password">Password</string>
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="id_fmt">User ID: %s</string>
+    <string name="email_fmt">Email: %s</string>
+    <string name="password_hint">*minimum 6 characters for password</string>
 </resources>

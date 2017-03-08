@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -29,7 +29,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +47,7 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
     private RecyclerView mRecycler;
     private ProgressBar mProgressBar;
     private LinearLayoutManager mManager;
+    private TextView mLoadingTextView;
 
     private SliderLayout mDemoSlider;
     private View rootView;
@@ -67,28 +67,35 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             // database.setPersistenceEnabled(true);
             mDatabase = database.getReference();
+            mDatabase.keepSynced(true);
         }
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.news_fragment, container, false);
             mRecycler = (RecyclerView) rootView.findViewById(R.id.newsRecyclerView);
             mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
+            mLoadingTextView = (TextView) rootView.findViewById(R.id.textViewLoading);
             mDemoSlider = (SliderLayout) rootView.findViewById(R.id.slider);
             mProgressBar.setVisibility(View.VISIBLE);
+            mLoadingTextView.setVisibility(View.VISIBLE);
             Query sliderQuery = getSliderQuery(mDatabase);
             sliderQuery.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     NewsDataModel newPost = dataSnapshot.getValue(NewsDataModel.class);
                     sliderList.add(newPost);
+
+
                     if (sliderList != null && sliderList.size() == 5) {
                         for (int i = 4; i >= 0; i--) {
                             setSlider(sliderList.get(i));
                         }
                     }
+                    Log.e("scrollList", "onDataAdded");
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.e("scrollList", "onDatachange");
                 }
 
                 @Override
@@ -202,6 +209,7 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
 
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 mProgressBar.setVisibility(View.GONE);
+                mLoadingTextView.setVisibility(View.GONE);
                 viewHolder.bindToPost(model /*new View.OnClickListener() {
                     @Override
                     public void onClick(View starView) {

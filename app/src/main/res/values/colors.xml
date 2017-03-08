@@ -3,4 +3,8 @@
     <color name="colorPrimary">#18b440</color>
     <color name="colorPrimaryDark">#174A24</color>
     <color name="colorAccent">#f2f0f0</color>
+    <color name="red">#ff1928</color>
+    <color name="deep_orange">#ff9419</color>
+    <color name="fab_color">#fc055b</color>
+    <color name="fab_color_ripple">#e9274b</color>
 </resources>

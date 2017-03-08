@@ -19,6 +19,8 @@ public class OnPreferenceManager {
     private String tournamentUpdate = "tournamentUpdate";
     private String tournamentName = "tournamentName";
     private String date = "date";
+    private String updatePopupCount = "updatePopupCount";
+    private String shareReminderCount = "shareReminderCount";
     private String scheduleUpdate = "scheduleUpdate";
     private String squadUpdate = "squadUpdate";
     private String dateFixture = "dateFixture";
@@ -27,6 +29,8 @@ public class OnPreferenceManager {
     private String liveStreamLink = "liveStreamLink";
     private String APP_VERSION_CODE = "app_version_code";
     private String defaultLiveStreamingLink = "OIaPQMtCkRc";
+    private String DEFAULT_IMAGE_INDICATOR = "default_image_indicator";
+    private String IMAGE_PATH = "image_path";
     private static OnPreferenceManager sOnPreferenceManager;
 
 
@@ -49,6 +53,46 @@ public class OnPreferenceManager {
 
     public synchronized int getNewsUpdate() {
         int selectionStart = prefs.getInt(newsUpdate, 1);
+        return selectionStart;
+    }
+
+    public synchronized void setDefaultImageIndicator(boolean set) {
+        editor.putBoolean(DEFAULT_IMAGE_INDICATOR, set);
+        editor.apply();
+    }
+
+    public synchronized Boolean getDefaultImageIndicator() {
+        boolean selectionStart = prefs.getBoolean(DEFAULT_IMAGE_INDICATOR, true);
+        return selectionStart;
+    }
+
+    public synchronized void setImagePath(String set) {
+        editor.putString(IMAGE_PATH, set);
+        editor.apply();
+    }
+
+    public synchronized String getImagePath() {
+        String selectionStart = prefs.getString(IMAGE_PATH, null);
+        return selectionStart;
+    }
+
+    public synchronized void setUpdatePopupCount(int news) {
+        editor.putInt(updatePopupCount, news);
+        editor.apply();
+    }
+
+    public synchronized int getUpdatePopupCount() {
+        int selectionStart = prefs.getInt(updatePopupCount, 1);
+        return selectionStart;
+    }
+
+    public synchronized void setShareReminderCount(int news) {
+        editor.putInt(shareReminderCount, news);
+        editor.apply();
+    }
+
+    public synchronized int getShareReminderCount() {
+        int selectionStart = prefs.getInt(shareReminderCount, 0);
         return selectionStart;
     }
 
@@ -92,7 +136,6 @@ public class OnPreferenceManager {
         long selectionStart = prefs.getLong(date, (long) -1);
         return selectionStart;
     }
-
 
 
     public synchronized int getTournamentUpdate() {

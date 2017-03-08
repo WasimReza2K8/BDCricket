@@ -3,8 +3,6 @@
     <string name="action_settings">সেটিংস</string>
     <string name="news">টপ নিউজ</string>
     <string name="national_team">জাতীয় দল</string>
-    <string name="national_women_team">জাতীয় মহিলা দল</string>
-    <string name="u_19_team">অনূর্ধ্ব-১৯ দল</string>
     <string name="upcoming_tournament">আসন্ন টুর্নামেন্ট</string>
     <string name="loading">লোড হচ্ছে...</string>
     <string name="popup_message">আপনার ইন্টারনেট সংযোগ বিচ্ছিন্ন  রয়েছে তথ্য নবায়ানের জন্য সংযোগ চালু করুন।</string>
@@ -44,4 +42,20 @@
     <string name="update_now">এখনই আপডেট চাই</string>
     <string name="later">পরে</string>
     <string name="player_detail">খেলোয়াড়ের বিস্তারিত</string>
+
+    <string name="hint_user_id">User ID</string>
+    <string name="get_custom_token">Get Token</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="custom_token">Custom Token</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="token_null">Token: null</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="id_fmt">User ID: %s</string>
+    <string name="email_fmt">Email: %s</string>
 </resources>

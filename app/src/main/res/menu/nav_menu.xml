@@ -44,6 +44,11 @@
             android:checked="false"
             android:icon="@drawable/livestreaming"
             android:title="@string/live_streaming" />
+      <!--  <item
+            android:id="@+id/sign_up"
+            android:checked="false"
+            android:icon="@drawable/livestreaming"
+            android:title="@string/create_account" />-->
         <item
             android:id="@+id/invite"
             android:checked="false"

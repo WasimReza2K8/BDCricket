@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.asus.bdcricketteam.R;
-import com.example.asus.bdcricketteam.datamodel.FixtureDataModel;
 import com.example.asus.bdcricketteam.datamodel.LiveScoreDataModel;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class LiveScoreListAdapter extends RecyclerView.Adapter<LiveScoreListAdap
 
     @Override
     public void onBindViewHolder(LiveScoreListAdapter.ViewHolder holder, int position) {
-        holder.mTextViewTitle.setText(list.get(position).getMatchTitle());
+        holder.mTextViewTitle.setText(list.get(position).getTitle());
     }
 
     @Override

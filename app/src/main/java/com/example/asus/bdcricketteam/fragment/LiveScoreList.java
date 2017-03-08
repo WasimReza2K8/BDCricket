@@ -47,7 +47,7 @@ public class LiveScoreList extends Fragment {
     private ProgressBar mProgressBar;
     private LiveScoreListAdapter adapter;
     private List<LiveScoreDataModel> list;
-   // private Tracker mTracker;
+    // private Tracker mTracker;
 
     @Nullable
     @Override
@@ -168,11 +168,12 @@ public class LiveScoreList extends Fragment {
                 Log.e("url", link.get(i));
                 LiveScoreDataModel model = new LiveScoreDataModel();
                 model.setLink(link.get(i));
-                model.setMatchTitle(title.get(i));
+                model.setTitle(title.get(i));
                 list.add(model);
                 //  }
             }
             // mProgressDialog.dismiss();
+            if (mProgressBar == null) return;
             mProgressBar.setVisibility(View.GONE);
             mTextView.setVisibility(View.GONE);
             setRecyclerView();
@@ -182,6 +183,8 @@ public class LiveScoreList extends Fragment {
 
     private void setRecyclerView() {
         // getAllDataFromDb();
+        if (mRecyclerView == null) return;
+
         if (list.size() > 0) {
             //hideEmptyLayout();
             adapter = new LiveScoreListAdapter(getActivity(), list);
