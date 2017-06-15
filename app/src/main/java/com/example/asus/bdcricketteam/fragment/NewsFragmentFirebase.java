@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,6 +52,8 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
 
     private SliderLayout mDemoSlider;
     private View rootView;
+    private int newDataAdded;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<NewsDataModel> sliderList = new ArrayList<>();
     // private static String VIDEO_ID = null;
     //private static final String API_KEY = "AIzaSyAfuxBW5SMQDLf8IDU_9Rwkn0-esinOfNw";
@@ -76,6 +79,18 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
             mLoadingTextView = (TextView) rootView.findViewById(R.id.textViewLoading);
             mDemoSlider = (SliderLayout) rootView.findViewById(R.id.slider);
             mProgressBar.setVisibility(View.VISIBLE);
+            mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swiperefreshlayout);
+            mSwipeRefreshLayout.bringToFront();
+            mSwipeRefreshLayout.setEnabled(true);
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if(newDataAdded != 1){
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+
+                }
+            });
             mLoadingTextView.setVisibility(View.VISIBLE);
             Query sliderQuery = getSliderQuery(mDatabase);
             sliderQuery.addChildEventListener(new ChildEventListener() {
@@ -91,11 +106,21 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
                         }
                     }
                     Log.e("scrollList", "onDataAdded");
+                    newDataAdded = 1;
+                    mSwipeRefreshLayout.bringToFront();
+                    mSwipeRefreshLayout.setRefreshing(true);
+                  /*  mSwipeRefreshLayout.setEnabled( true );
+                    mSwipeRefreshLayout.setRefreshing( true );
+                    mSwipeRefreshLayout.bringToFront();*/
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Log.e("scrollList", "onDatachange");
+                   // mSwipeRefreshLayout.bringToFront();
+                   /* mSwipeRefreshLayout.setEnabled( true );
+                    mSwipeRefreshLayout.setRefreshing( true );
+                    mSwipeRefreshLayout.bringToFront();*/
                 }
 
                 @Override
@@ -190,6 +215,7 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
         Log.e("Query", postsQuery.toString() + " null");
+        mSwipeRefreshLayout.setRefreshing(true);
         mAdapter = new FirebaseRecyclerAdapter<NewsDataModel, NewsViewHolder>(NewsDataModel.class, R.layout.news_item,
                 NewsViewHolder.class, postsQuery) {
             @Override
@@ -224,6 +250,16 @@ public class NewsFragmentFirebase extends Fragment implements BaseSliderView.OnS
                     }
                 }*/, getActivity());
                 // setSlider();
+                if(newDataAdded == 1){
+                    if(mRecycler != null){
+                        mRecycler.smoothScrollToPosition(30);
+                        newDataAdded = 0;
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        //mSwipeRefreshLayout.bringToFront();
+                        //mSwipeRefreshLayout.setEnabled(false);
+                       // mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
             }
         };
         mRecycler.setAdapter(mAdapter);
